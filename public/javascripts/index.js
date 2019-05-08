@@ -44,7 +44,7 @@ $(()=>{
 		$('#copies').html('')
 		copies.forEach((copy, i) => {
 			$('#copies').append(`
-				<li data-copy="${i}">
+				<li id="copy${copy}" data-copy="${i}">
 					${copy}
 					<span class="w3-right w3-hide">
 						<a href="file:///C:/Users/Jonas/Github/softgestion/copy/${copy}">
@@ -132,11 +132,21 @@ $(()=>{
 			})
 		}else if (e.target.tagName  == 'I') {
 			
-			var copy = copies[$(e.target).parent().parent().data('copy')]
+			var index = $(e.target).parent().parent().data('copy')
+			var copy = copies[index]
 
 			if ($(e.target).hasClass('fa-trash-alt')) {			//Suppression de la copie
-				if (confirm(`Etes-vous sur de vouloir supprimer la copie "${copy}" ?\nLes modifications qui n'ont pas été soumises seront perdues !`)) {
+				
+				if (confirm(`Etes-vous sur de vouloir supprimer la copie "${copy}" ?\nLes modifications qui n'ont pas été uploader seront perdues !`)) {
 					console.log('Suppression de la copie')
+					$.post(`/copies/${copy}/remove`, {}, rep => {
+						if (rep.success) {
+							$(`#copy${copy}`).remove()
+							copies.splice(index, 1)
+						}else{
+							alert(rep.message)
+						}
+					})
 				}
 
 			}else if ($(e.target).hasClass('fa-upload')) {	//Soumission de la copie

@@ -4,9 +4,6 @@ var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 
-var indexRouter = require('./routes/index')
-var usersRouter = require('./routes/users')
-
 var app = express()
 app.listen(process.env.PORT || 3000, () => {
 	console.log(`server listen on the port ${process.env.PORT}`)
@@ -23,9 +20,18 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'master')))
 app.use(express.static(path.join(__dirname, 'copy')))
+app.use(express.static(path.join(__dirname, 'pull')))
+app.use(express.static(path.join(__dirname, 'backup')))
 
-app.use('/', indexRouter)
-app.use('/users', usersRouter)
+
+//ROUTAGE
+app.use('/', require('./routes/index'))
+app.use('/users', require('./routes/users'))
+app.use('/masters', require('./routes/masters'))
+app.use('/copies', require('./routes/copies'))
+//app.use('/pulls', require('./routes/pulls'))
+//app.use('/backups', require('./routes/backups'))
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -37,6 +43,8 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
+
+  console.log(err.message)
 
   // render the error page
   res.status(err.status || 500)
