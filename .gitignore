@@ -1,7 +1,8 @@
 # Specify filepatterns you want git to ignore.
 node_modules
 package-lock.json
-copy
-master
-backup
-pull
+copy/*
+master/*
+!master/exemple
+backup/*
+pull/*
