@@ -17,7 +17,7 @@ $(()=>{
 		$('#masters').html('')
 		masters.forEach((master, i) => {
 			$('#masters').append(`
-				<li data-master="${i}">
+				<li data-master="${master}">
 					${master}
 					<span class="w3-right w3-hide">
 						<a href="file:///C:/Users/Jonas/Github/softgestion/master/${master}">
@@ -44,7 +44,7 @@ $(()=>{
 		$('#copies').html('')
 		copies.forEach((copy, i) => {
 			$('#copies').append(`
-				<li id="copy${copy}" data-copy="${i}">
+				<li id="copy${copy}" data-copy="${copy}">
 					${copy}
 					<span class="w3-right w3-hide">
 						<a href="file:///C:/Users/Jonas/Github/softgestion/copy/${copy}">
@@ -72,7 +72,7 @@ $(()=>{
 
 		if (e.target.tagName == 'LI') {	//affiche l'apercue
 
-			var master = masters[$(e.target).data('master')]
+			var master = $(e.target).data('master')
 			$.get(`/masters/${master}`, files => {
 				var pdf = files.filter(f => f.substr(-4).toLowerCase() == '.pdf')
 				if (pdf.length > 0) {
@@ -83,12 +83,13 @@ $(()=>{
 			})
 		}else if (e.target.tagName  == 'I') {
 			
-			var master = masters[$(e.target).parent().parent().data('master')]
+			var master = $(e.target).parent().parent().data('master')
 
 			if ($(e.target).hasClass('fa-history')) {			//Afficher l'historique
 				console.log('Afficher l\'historique')
 			}else if ($(e.target).hasClass('fa-download')) {	//Créer une copie
 				console.log('Créer une copie')
+				console.log(copies)
 			 	if (copies.indexOf(master) == -1) {
 			 		postNewCopy(master)
 			 	}else{
@@ -121,7 +122,7 @@ $(()=>{
 
 		if (e.target.tagName == 'LI') {	//affiche l'apercue
 
-			var copy = copies[$(e.target).data('copy')]
+			var copy = $(e.target).data('copy')
 			$.get(`/copies/${copy}`, files => {
 				var pdf = files.filter(f => f.substr(-4).toLowerCase() == '.pdf')
 				if (pdf.length > 0) {
@@ -132,17 +133,17 @@ $(()=>{
 			})
 		}else if (e.target.tagName  == 'I') {
 			
-			var index = $(e.target).parent().parent().data('copy')
-			var copy = copies[index]
+			var copy = $(e.target).parent().parent().data('copy')
 
 			if ($(e.target).hasClass('fa-trash-alt')) {			//Suppression de la copie
 				
 				if (confirm(`Etes-vous sur de vouloir supprimer la copie "${copy}" ?\nLes modifications qui n'ont pas été uploader seront perdues !`)) {
 					console.log('Suppression de la copie')
+					console.log(copies)
 					$.post(`/copies/${copy}/remove`, {}, rep => {
 						if (rep.success) {
 							$(`#copy${copy}`).remove()
-							copies.splice(index, 1)
+							copies.splice(copies.indexOf(copy), 1)
 						}else{
 							alert(rep.message)
 						}

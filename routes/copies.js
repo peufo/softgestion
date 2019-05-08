@@ -3,6 +3,8 @@ var router = express.Router()
 var fs = require('fs')
 var path = require('path')
 var rimraf = require('rimraf')//Recursif
+var ncp = require('ncp').ncp	//Recursif
+ncp.limit = 2
 
 //TODO rendre les chemins parametrables
 var copyPath = path.join(__dirname, '..', 'copy')
@@ -28,6 +30,16 @@ router
 				res.json({success: true, message: `Copy ${req.params.folderName} deleted`})
 			}else next(err)
 		})
+	})
+	.post('/:folderName/pull', (req, res, next) => {
+		var source = path.join(masterPath, req.params.folderName)
+		var destination = path.join(copyPath, req.params.folderName)
+		/*
+		ncp(source, destination, err => {
+			if (!err) res.json({success: true})
+			else next(err)
+		})
+	*/
 	})
 
 module.exports = router
