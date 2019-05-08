@@ -1,0 +1,19 @@
+{
+  "name": "softgestion",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=develpment PORT=3001 pm2 start --name devgestion app.js --watch & pm2 monit",
+    "prod": "cross-env NODE_ENV=production PORT=3000 pm2 start --name softgestion app.js & pm2 monit"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.9.0",
+    "ncp": "^2.0.0",
+    "path": "^0.12.7"
+  }
+}

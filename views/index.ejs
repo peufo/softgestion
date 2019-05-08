@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gestionnaire de programmes</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel='stylesheet' href='/stylesheets/style.css'>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/index.js"></script>
+  </head>
+  <body>
+  	<h1>Gestionnaire de programmes</h1>
+  	<input type="search" name="search" placeholder="Recherche" class="w3-input m6 w3-col">
+  	<div class="w3-row">
+
+  		<div class="w3-col w3-padding m3">
+	 		<h3>Masters</h3>
+			<ul id="masters" class="w3-ul"></ul> 
+  		</div>
+
+  		<div class="w3-col w3-padding m3">
+	 		<h3>Work copy</h3>
+			<ul id="copies" class="w3-ul"></ul> 			
+  		</div>
+
+  		<div id="viewer" class="w3-col m6">
+        <object id="pdfViewer" width="780px" height="600px" data=""></object> 
+      </div>
+  	</div>
+
+  </body>
+</html>
