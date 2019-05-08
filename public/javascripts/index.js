@@ -93,7 +93,7 @@ $(()=>{
 			 		postNewCopy(master)
 			 	}else{
 			 		if (confirm('Une copie du dossier que vous voulez importer éxiste déjà !\nSouhaitez-vous l\'écraser ?')) {
-			 			postNewCopy(master)
+			 			postNewCopy(master, true)
 			 		}
 			 	}
 
@@ -103,10 +103,10 @@ $(()=>{
 
 	})
 
-	function postNewCopy(master){
+	function postNewCopy(master, notNew){
 		$.post(`/masters/${master}/copy`, function(data){
 			if (data.success) {
-				copies.push(master)
+				if (!notNew) copies.push(master)
 				showCopies()
 			}else{
 				alert('Erreur')

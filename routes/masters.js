@@ -32,9 +32,6 @@ router
 
 		var source = path.join(masterPath, req.params.folderName)
 		var destination = path.join(copyPath, req.params.folderName)
-
-		console.log(source)
-		console.log(destination)
 		
 		ncp(source, destination, err => {
 			if (!err) res.json({success: true})
