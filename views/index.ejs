@@ -14,19 +14,24 @@
   	<div class="w3-row">
 
   		<div class="w3-col w3-padding m3">
-	 		<h3>Masters</h3>
-			<ul id="masters" class="w3-ul"></ul> 
+  	 		<div id="mastertitle">
+          <span class="w3-xlarge">Masters</span>
+          <i id="openaddmaster" class="fas fa-plus w3-xlarge w3-right w3-hide" style="margin-right: 15px;"></i>
+        </div>
+  			<ul id="masters" class="w3-ul"></ul> 
   		</div>
 
   		<div class="w3-col w3-padding m3">
-	 		<h3>Work copy</h3>
-			<ul id="copies" class="w3-ul"></ul> 			
+  	 		<span class="w3-xlarge">Work copy</span>
+  			<ul id="copies" class="w3-ul"></ul> 			
   		</div>
 
   		<div id="viewer" class="w3-col m6">
         <object id="pdfViewer" width="780px" height="600px" data=""></object> 
       </div>
   	</div>
+
+    <input id="selectfolder" type="file" webkitdirectory directory multiple class="w3-hide"/>
 
   </body>
 </html>

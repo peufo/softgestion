@@ -7,6 +7,7 @@
     "prod": "cross-env NODE_ENV=production PORT=3000 pm2 start --name softgestion app.js & pm2 monit"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",

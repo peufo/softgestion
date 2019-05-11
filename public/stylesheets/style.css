@@ -12,9 +12,13 @@ li{
 }
 
 li:hover{
-	border-left: 5px solid grey ;
+	border-left: 3px solid grey ;
 }
 
-li i:hover{
+i:hover{
 	transform: scale(1.2);
+}
+
+.fa-plus{
+	cursor: pointer;
 }

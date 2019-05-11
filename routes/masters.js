@@ -12,7 +12,18 @@ var copyPath = path.join(__dirname, '..', 'copy')
 router
 	.post('/', (req, res, next) => {
 		//TODO: creation nouveau fichier
-		res.json({success: false})
+		var folderName = req.body.folderName.replace(/[^a-zA-Z0-9]/g, '')
+		var files = req.body.files.map(f => f.split('/').slice(1).join('/'))
+		console.log(folderName)
+		console.log(files)
+		console.log(req.body.files)
+		
+		fs.mkdir(path.join(masterPath, folderName), err => {
+			if (!err) {
+				res.json({success: false})
+			}else next(err)
+		})
+		
 	})
 	.get('/', (req, res, next) => {
 		fs.readdir(masterPath, (err, files) => {

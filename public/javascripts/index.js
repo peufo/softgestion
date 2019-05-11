@@ -39,6 +39,43 @@ $(()=>{
 
 	}
 
+	$('#mastertitle').hover(function(){
+		$(this).children('i').removeClass('w3-hide')
+	}, function(){
+		$(this).children('i').addClass('w3-hide')
+	})
+
+	$('#openaddmaster').click(function(){
+		$('#selectfolder').click()
+	})
+
+	$('#selectfolder').change(function(){
+		console.log('Folder selected')
+		var files = Array.from($(this).get(0).files, f => f.webkitRelativePath)
+		if (files.length) {
+			console.log(files)
+			var folderName = prompt('Nom du dossier', files[0].split('/')[0])
+			var cleanFolderName = folderName.replace(/[^a-zA-Z0-9]/g, '')
+			if (folderName.length > cleanFolderName.length) {
+				alert(`Les caractères spéciaux et les espaces ont été supprimés.\nRésultat: ${cleanFolderName}`)
+			}
+
+			$.postJSON('/masters', {folderName: folderName, files: files}, function(rep){
+				if (rep.success) {
+					//TODO: traiter le succès
+				 console.log('succès')
+				}else{
+					alert(rep.message)
+				}
+			}, 'json')
+					
+		}else{
+			alert('Dossier vide !')
+		}
+	})
+
+
+
 	function showCopies(){
 
 		$('#copies').html('')
@@ -159,6 +196,21 @@ $(()=>{
 
 	})
 
-
-
 })
+
+$.postJSON = function( url, data, callback) {
+    // shift arguments if data argument was omitted
+    if ( jQuery.isFunction( data ) ) {
+		callback = data
+		data = undefined
+	}
+
+    return jQuery.ajax({
+		url: url,
+		type: "POST",
+		contentType:"application/json; charset=utf-8",
+		dataType: "json",
+		data: JSON.stringify(data),
+		success: callback
+	})
+}
