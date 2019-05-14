@@ -52,6 +52,27 @@ $(()=>{
 	$('#selectfolder').change(function(){
 		console.log('Folder selected')
 		var files = Array.from($(this).get(0).files, f => f.webkitRelativePath)
+		var data = new FormData($(this).parent()[0])
+
+		$.ajax({
+			type: 'POST',
+			enctype: 'multipart/form-data', 
+			url: '/masters',
+			data: data,
+			processData: false,
+			contentType: false,
+			cache: false,
+			timeout: 600000,
+			success: function (data) {
+				alert(data.message)
+				console.log(data.form)
+			},
+			error: function (err) {
+				alert(err.message)
+			}
+		})
+
+		/*
 		if (files.length) {
 			console.log(files)
 			var folderName = prompt('Nom du dossier', files[0].split('/')[0])
@@ -59,6 +80,9 @@ $(()=>{
 			if (folderName.length > cleanFolderName.length) {
 				alert(`Les caractères spéciaux et les espaces ont été supprimés.\nRésultat: ${cleanFolderName}`)
 			}
+
+
+
 
 			$.postJSON('/masters', {folderName: folderName, files: files}, function(rep){
 				if (rep.success) {
@@ -72,6 +96,7 @@ $(()=>{
 		}else{
 			alert('Dossier vide !')
 		}
+		*/
 	})
 
 

@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var fs = require('fs')
 var path = require('path')
+var formidable = require('formidable')
 var ncp = require('ncp').ncp	//Recursif
 ncp.limit = 2
 
@@ -11,19 +12,30 @@ var copyPath = path.join(__dirname, '..', 'copy')
 
 router
 	.post('/', (req, res, next) => {
-		//TODO: creation nouveau fichier
-		var folderName = req.body.folderName.replace(/[^a-zA-Z0-9]/g, '')
-		var files = req.body.files.map(f => f.split('/').slice(1).join('/'))
-		console.log(folderName)
-		console.log(files)
-		console.log(req.body.files)
-		
-		fs.mkdir(path.join(masterPath, folderName), err => {
+		//TODO: fare un promesse (fonction recursive ? )
+		//TODO: Créer le fichier d'initialisation CHANGELOG.md
+		//TODO: Tester l'éxistance du dossier et traiter le cas (plutot côté client)
+
+		var form = new formidable.IncomingForm()
+		form.parse(req, err => {
 			if (!err) {
-				res.json({success: false})
+				var files = form.openedFiles
+				var folderName = files[0].name.split('/')[0]
+				fs.mkdir(path.join(masterPath, folderName), err => {
+					if (!err) {
+						files.forEach(f => {
+							var newPath = path.join(masterPath, f.name)
+							fs.rename(f.path, newPath, err => {
+								if (!err) {
+									console.log(`Loaded ${f.name}`)						
+								}else next(err)
+							})
+						})
+						res.json({success: true, message: 'Faire une promesse'})
+					}else next(err)
+				})
 			}else next(err)
 		})
-		
 	})
 	.get('/', (req, res, next) => {
 		fs.readdir(masterPath, (err, files) => {
