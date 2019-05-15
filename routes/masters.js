@@ -48,24 +48,27 @@ router
 			if (!err) res.json({success: true})
 			else next(err)
 		})
-	
 	})
 
 var createMaster = (folderName, files, cb) => {
 	var test = files[0].name.split('/')
 	test.shift()
-	console.log(`file: ${test}`)
 	fs.mkdir(path.join(paths.master, folderName), err => {
 		if (!err) {
-			Promise.all(files.map(f => createFilePromise(folderName, f)))
-			.then(() => {
-				console.log('files copied')
-				cb(null)
-			})
-			.catch(err => {
-				console.log('Failed')
-				console.log(err)
-				cb(err)
+			var log = `*Ce fichier est généré par l'application softgestion*\n\n*${new Date().toLocaleString()}*\n#Création du répertoire par {nom de l'utilisateur}`
+			fs.writeFile(path.join(paths.master, folderName, 'CHANGELOG.md'), log, err => {
+				if (!err) {
+					Promise.all(files.map(f => createFilePromise(folderName, f)))
+					.then(() => {
+						console.log('files copied')
+						cb(null)
+					})
+					.catch(err => {
+						console.log('Failed')
+						console.log(err)
+						cb(err)
+					})
+				}else cb(err)
 			})
 		}else cb(err)
 	})	

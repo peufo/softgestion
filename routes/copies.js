@@ -3,8 +3,8 @@ var router = express.Router()
 var fs = require('fs')
 var path = require('path')
 var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
-var rimraf = require('rimraf')//Recursif
-var ncp = require('ncp').ncp	//Recursif
+var rimraf = require('rimraf')	//Remove Recursif
+var ncp = require('ncp').ncp	//Copy Recursif
 ncp.limit = 2
 
 router
@@ -30,14 +30,17 @@ router
 		})
 	})
 	.post('/:folderName/pull', (req, res, next) => {
-		var source = path.join(masterPath, req.params.folderName)
-		var destination = path.join(paths.copy, req.params.folderName)
-		/*
-		ncp(source, destination, err => {
-			if (!err) res.json({success: true})
-			else next(err)
+		var source = path.join(paths.copy, req.params.folderName)
+		var destination = path.join(paths.pull, `${req.params.folderName}_${new Date().getTime()}`)
+		var log = `\n\n*${new Date().toLocaleString()}*\n#Modification proposé par {nom de l'utilisateur}\n->${req.body.comment}`
+		fs.appendFile(path.join(source, 'CHANGELOG.md'), log, err => {
+			if (!err) {
+				ncp(source, destination, err => {
+					if (!err) res.json({success: true})
+					else next(err)
+				})
+			}else next(err)
 		})
-	*/
 	})
 
 module.exports = router

@@ -49,23 +49,17 @@ $(()=>{
 		})		
 	}
 
-	$('#mastertitle').hover(function(){
-		$(this).children('i').removeClass('w3-hide')
-	}, function(){
-		$(this).children('i').addClass('w3-hide')
-	})
-
 	$('#openaddmaster').click(function(){
 		$('#selectfolder').click()
 	})
 
+	//TODO: change is the good event ?
 	$('#selectfolder').change(function(){
 
 		var files = Array.from($(this).get(0).files, f => f.webkitRelativePath)
 		var data = new FormData($(this).parent()[0])
 		
 		if (files.length) {
-			console.log(files)
 			var folderName = prompt('Nom du dossier', files[0].split('/')[0])
 
 			//TODO: faire la même côté server
@@ -85,7 +79,6 @@ $(()=>{
 					cache: false,
 					timeout: 600000,
 					success: function (data) {
-						console.log(data)
 						masters.push(folderName)
 						addMaster(folderName)
 						addMasterEvent()
@@ -153,8 +146,6 @@ $(()=>{
 			if ($(e.target).hasClass('fa-history')) {			//Afficher l'historique
 				console.log('Afficher l\'historique')
 			}else if ($(e.target).hasClass('fa-download')) {	//Créer une copie
-				console.log('Créer une copie')
-				console.log(copies)
 			 	if (copies.indexOf(master) == -1) {
 			 		postNewCopy(master)
 			 	}else{
@@ -203,8 +194,6 @@ $(()=>{
 			if ($(e.target).hasClass('fa-trash-alt')) {			//Suppression de la copie
 				
 				if (confirm(`Etes-vous sur de vouloir supprimer la copie "${copy}" ?\nLes modifications qui n'ont pas été uploader seront perdues !`)) {
-					console.log('Suppression de la copie')
-					console.log(copies)
 					$.post(`/copies/${copy}/remove`, {}, rep => {
 						if (rep.success) {
 							$(`#copy${copy}`).remove()
@@ -216,7 +205,18 @@ $(()=>{
 				}
 
 			}else if ($(e.target).hasClass('fa-upload')) {	//Soumission de la copie
-				console.log('soumission de la copie')
+				var comment = prompt('Quels sont les changement ?')
+				if (comment.length) {
+					$.post(`/copies/${copy}/pull`, {comment: comment}, res => {
+						if (res.success) {
+							alert(`Merci !\n\nVos modifications seront prise en compte dés qu'elles seront validé !` )
+						}else{
+							alert(err.message)
+						}
+					})
+				}else{
+					alert('Vous devez faire un commentaire !')
+				}
 
 			}
 
@@ -226,7 +226,7 @@ $(()=>{
 
 })
 
-$.postJSON = function( url, data, callback) {
+$.postJSON = function(url, data, callback) {
     // shift arguments if data argument was omitted
     if ( jQuery.isFunction( data ) ) {
 		callback = data
