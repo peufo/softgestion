@@ -10,26 +10,16 @@ ncp.limit = 2
 
 router
 	.post('/', (req, res, next) => {
-		//TODO: fare un promesse (fonction recursive ? )
 		//TODO: Créer le fichier d'initialisation CHANGELOG.md
 		//TODO: Tester l'éxistance du dossier et traiter le cas (plutot côté client)
 
 		var form = new formidable.IncomingForm()
-		form.parse(req, err => {
+
+		form.parse(req, (err, fields) => {
 			if (!err) {
-				var files = form.openedFiles
-				var folderName = files[0].name.split('/')[0]
-				fs.mkdir(path.join(paths.master, folderName), err => {
+				createMaster(fields.folderName, form.openedFiles, err => {
 					if (!err) {
-						files.forEach(f => {
-							var newPath = path.join(paths.master, f.name)
-							fs.rename(f.path, newPath, err => {
-								if (!err) {
-									console.log(`Loaded ${f.name}`)						
-								}else next(err)
-							})
-						})
-						res.json({success: true, message: 'Faire une promesse'})
+						res.json({success: true, message: 'New master created'})
 					}else next(err)
 				})
 			}else next(err)
@@ -60,5 +50,45 @@ router
 		})
 	
 	})
+
+var createMaster = (folderName, files, cb) => {
+	var test = files[0].name.split('/')
+	test.shift()
+	console.log(`file: ${test}`)
+	fs.mkdir(path.join(paths.master, folderName), err => {
+		if (!err) {
+			Promise.all(files.map(f => createFilePromise(folderName, f)))
+			.then(() => {
+				console.log('files copied')
+				cb(null)
+			})
+			.catch(err => {
+				console.log('Failed')
+				console.log(err)
+				cb(err)
+			})
+		}else cb(err)
+	})	
+}
+
+
+var createFilePromise = (folderName, file) => {
+	var names = file.name.split('/')
+	if (names.length == 2) {
+		var name = names[1]
+		return new Promise((resolve, reject) => {
+			var newPath = path.join(paths.master, folderName, name)
+			fs.rename(file.path, newPath, err => {
+				if (!err) resolve()
+				else reject(err)
+			})
+		})
+	}else{
+		//TODO: Faire fonctionner de manière récursive
+		return new Promise(resolve => resolve())
+	}
+
+}
+
 
 module.exports = router;

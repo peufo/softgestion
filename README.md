@@ -1,2 +1,2 @@
 # softgestion
-Interface facilitant la manipulation et le suivi de l'évolution des répertoire
+Interface facilitant la manipulation et le suivi de l'évolution de répertoires

@@ -22,28 +22,31 @@ $(()=>{
 
 	function showMasters(){
 		$('#masters').html('')
-		masters.forEach((master, i) => {
-			$('#masters').append(`
-				<li data-master="${master}">
-					${master}
-					<span class="w3-right w3-hide">
-						<a href="${paths.master}/${master}">
-							<i class="far fa-folder-open"></i>
-						</a>&nbsp;&nbsp;
-						<i class="fas fa-history"></i>&nbsp;&nbsp;
-						<i class="fas fa-download"></i>
-					</span>
-				</li>
-			`)
-		})
+		masters.forEach(addMaster)
+		addMasterEvent()
+	}
 
-		//TODO: charger un apercu
+	var addMaster = master => {
+		$('#masters').append(`
+			<li data-master="${master}">
+				${master}
+				<span class="w3-right w3-hide">
+					<a href="${paths.master}/${master}">
+						<i class="far fa-folder-open"></i>
+					</a>&nbsp;&nbsp;
+					<i class="fas fa-history"></i>&nbsp;&nbsp;
+					<i class="fas fa-download"></i>
+				</span>
+			</li>
+		`)
+	}
+
+	var addMasterEvent = () => {
 		$('#masters li').hover(function(){
 			$(this).children('span').removeClass('w3-hide')
 		}, function(){
 			$(this).children('span').addClass('w3-hide')
-		})
-
+		})		
 	}
 
 	$('#mastertitle').hover(function(){
@@ -57,53 +60,46 @@ $(()=>{
 	})
 
 	$('#selectfolder').change(function(){
-		console.log('Folder selected')
+
 		var files = Array.from($(this).get(0).files, f => f.webkitRelativePath)
 		var data = new FormData($(this).parent()[0])
-
-		$.ajax({
-			type: 'POST',
-			enctype: 'multipart/form-data', 
-			url: '/masters',
-			data: data,
-			processData: false,
-			contentType: false,
-			cache: false,
-			timeout: 600000,
-			success: function (data) {
-				alert(data.message)
-				console.log(data.form)
-			},
-			error: function (err) {
-				alert(err.message)
-			}
-		})
-
-		/*
+		
 		if (files.length) {
 			console.log(files)
 			var folderName = prompt('Nom du dossier', files[0].split('/')[0])
+
+			//TODO: faire la même côté server
 			var cleanFolderName = folderName.replace(/[^a-zA-Z0-9]/g, '')
-			if (folderName.length > cleanFolderName.length) {
-				alert(`Les caractères spéciaux et les espaces ont été supprimés.\nRésultat: ${cleanFolderName}`)
+
+			data.append('folderName', cleanFolderName)
+
+			//TODO: Laisser l'écrasement possible ?
+			if (masters.indexOf(cleanFolderName) == -1 || confirm(`Attention, le dossier ${cleanFolderName} existe déjà !\n Etes-vous sur de vouloir l'écraser`)) {
+				$.ajax({
+					type: 'POST',
+					enctype: 'multipart/form-data', 
+					url: '/masters',
+					data: data,
+					processData: false,
+					contentType: false,
+					cache: false,
+					timeout: 600000,
+					success: function (data) {
+						console.log(data)
+						masters.push(folderName)
+						addMaster(folderName)
+						addMasterEvent()
+					},
+					error: function (err) {
+						alert(err.message)
+					}
+				})				
 			}
-
-
-
-
-			$.postJSON('/masters', {folderName: folderName, files: files}, function(rep){
-				if (rep.success) {
-					//TODO: traiter le succès
-				 console.log('succès')
-				}else{
-					alert(rep.message)
-				}
-			}, 'json')
 					
 		}else{
 			alert('Dossier vide !')
 		}
-		*/
+		
 	})
 
 
