@@ -1,0 +1,11 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.pathinput{
+	width: 500px;
+	height: 28px;
+	left: 80px;
+	position: absolute;
+}

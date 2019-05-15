@@ -15,7 +15,7 @@ li:hover{
 	border-left: 3px solid grey ;
 }
 
-i:hover{
+li i:hover{
 	transform: scale(1.2);
 }
 

@@ -1,17 +1,24 @@
 $(()=>{
 
+	var paths = {}
 	var masters = []
 	var copies = []
 
-	$.get('/masters', function(data){
-		masters = data
+	$.get('/paths', res => {
+		paths = res
+	})
+
+	$.get('/masters', res => {
+		masters = res
 		showMasters()
 	})
 
-	$.get('/copies', function(data){
-		copies = data
+	$.get('/copies', res => {
+		copies = res
 		showCopies()
 	})
+
+
 
 	function showMasters(){
 		$('#masters').html('')
@@ -20,7 +27,7 @@ $(()=>{
 				<li data-master="${master}">
 					${master}
 					<span class="w3-right w3-hide">
-						<a href="file:///C:/Users/Jonas/Github/softgestion/master/${master}">
+						<a href="${paths.master}/${master}">
 							<i class="far fa-folder-open"></i>
 						</a>&nbsp;&nbsp;
 						<i class="fas fa-history"></i>&nbsp;&nbsp;
@@ -109,7 +116,7 @@ $(()=>{
 				<li id="copy${copy}" data-copy="${copy}">
 					${copy}
 					<span class="w3-right w3-hide">
-						<a href="file:///C:/Users/Jonas/Github/softgestion/copy/${copy}">
+						<a href="${paths.copy}/${copy}">
 							<i class="far fa-folder-open"></i>
 						</a>&nbsp;&nbsp;
 						<i class="far fa-trash-alt"></i>&nbsp;&nbsp;

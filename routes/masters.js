@@ -2,13 +2,11 @@ var express = require('express')
 var router = express.Router()
 var fs = require('fs')
 var path = require('path')
-var formidable = require('formidable')
+var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
+var formidable = require('formidable') //Upload files
 var ncp = require('ncp').ncp	//Recursif
 ncp.limit = 2
 
-//TODO rendre les chemins parametrables
-var masterPath = path.join(__dirname, '..', 'master')
-var copyPath = path.join(__dirname, '..', 'copy')
 
 router
 	.post('/', (req, res, next) => {
@@ -21,10 +19,10 @@ router
 			if (!err) {
 				var files = form.openedFiles
 				var folderName = files[0].name.split('/')[0]
-				fs.mkdir(path.join(masterPath, folderName), err => {
+				fs.mkdir(path.join(paths.master, folderName), err => {
 					if (!err) {
 						files.forEach(f => {
-							var newPath = path.join(masterPath, f.name)
+							var newPath = path.join(paths.master, f.name)
 							fs.rename(f.path, newPath, err => {
 								if (!err) {
 									console.log(`Loaded ${f.name}`)						
@@ -38,14 +36,14 @@ router
 		})
 	})
 	.get('/', (req, res, next) => {
-		fs.readdir(masterPath, (err, files) => {
+		fs.readdir(paths.master, (err, files) => {
 			if (!err) {
 				res.json(files)
 			}else next(err)
 		})
 	})
 	.get('/:folderName', (req, res, next) => {
-		fs.readdir(path.join(masterPath, req.params.folderName), (err, files) => {
+		fs.readdir(path.join(paths.master, req.params.folderName), (err, files) => {
 			if (!err) {
 				res.json(files)
 			}else next(err)
@@ -53,8 +51,8 @@ router
 	})
 	.post('/:folderName/copy', (req, res, next) => {
 
-		var source = path.join(masterPath, req.params.folderName)
-		var destination = path.join(copyPath, req.params.folderName)
+		var source = path.join(paths.master, req.params.folderName)
+		var destination = path.join(paths.copy, req.params.folderName)
 		
 		ncp(source, destination, err => {
 			if (!err) res.json({success: true})
