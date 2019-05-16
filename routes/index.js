@@ -13,6 +13,9 @@ router
 	.get('/admin', (req, res, next) => {
 		res.render('admin')
 	})
+	.get('/admin/paths', (req, res, next) => {
+		res.render('adminPaths')
+	})
 	.get('/paths', (req, res, next) => {
 		res.json(paths)
 	})

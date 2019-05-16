@@ -30,7 +30,7 @@ app.use('/', require('./routes/index'))
 app.use('/users', require('./routes/users'))
 app.use('/masters', require('./routes/masters'))
 app.use('/copies', require('./routes/copies'))
-//app.use('/pulls', require('./routes/pulls'))
+app.use('/pulls', require('./routes/pulls'))
 //app.use('/backups', require('./routes/backups'))
 
 
