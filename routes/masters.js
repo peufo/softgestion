@@ -40,15 +40,17 @@ router
 		})
 	})
 	.post('/:folderName/copy', (req, res, next) => {
-
-		var source = path.join(paths.master, req.params.folderName)
-		var destination = path.join(paths.copy, req.params.folderName)
-		
-		ncp(source, destination, err => {
-			if (!err) res.json({success: true})
-			else next(err)
-		})
+		if (req.body.section) {
+			var source = path.join(paths.master, req.params.folderName)
+			var destination = path.join(paths.copy, req.body.section, req.params.folderName)
+			console.log(destination)
+			ncp(source, destination, err => {
+				if (!err) res.json({success: true})
+				else next(err)
+			})			
+		}else next(Error('Section non défini !'))
 	})
+
 
 var createMaster = (folderName, files, cb) => {
 	var test = files[0].name.split('/')

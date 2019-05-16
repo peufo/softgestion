@@ -7,7 +7,7 @@ a {
   text-decoration: none;
 }
 
-li, #openaddmaster{
+li, #openaddmaster, #closeChoiceCopySection, #CreateCopySection{
 	cursor: pointer;
 }
 
@@ -15,8 +15,12 @@ li:hover{
 	border-left: 3px solid grey ;
 }
 
-li i:hover, #openaddmaster:hover, a>i:hover{
+li i:hover, #openaddmaster:hover, a>i:hover, #closeChoiceCopySection:hover{
 	transform: scale(1.2);
+}
+
+#CreateCopySection:hover{
+	transform: scale(1.1);
 }
 
 .fa-plus{
