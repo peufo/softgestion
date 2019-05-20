@@ -9,7 +9,7 @@
     <script type="text/javascript" src="/javascripts/admin.js"></script>
 </head>
 <body>
-
+	<h1>Gestionnaire de programmes <span class="w3-small">Mode admin</span></h1>
 	<div class="w3-col m4">
 		<ul id="menu" class="w3-ul w3-xlarge">
 			<li id="menu0" data-index="0">
@@ -37,7 +37,10 @@
 			<span class="w3-xlarge">
 				<i class="fas fa-clipboard-check"></i>
 				Gestion des modifications
-			</span><br><br><br>
+			</span><br>
+
+			<span id="numberValidation" class="w3-small">Pas de validation en attente</span>
+			<br><br>
 
 			<ul id="pulls" class="w3-ul"></ul>
 			
@@ -62,7 +65,7 @@
 
 			<span class="w3-xlarge">
 				<i class="far fa-folder-open"></i>
-				Gestion des chemins	
+				Gestion des chemins
 			</span><br><br><br>
 
 			<i class="far fa-clipboard w3-xlarge w3-left"></i>
@@ -82,11 +85,19 @@
 
 	</div>
 
+    <a href="/">
+      <i class="fas fa-home w3-xlarge w3-display-bottomleft w3-margin"></i>
+    </a>
+
 
 	<style type="text/css">
+		html {
+			overflow-y: hidden;
+		}
 		body {
 		  padding: 50px;
 		  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+		  
 		}
 
 		#menu li {
@@ -106,6 +117,10 @@
 		.removepull {
 			border: solid 2px #F44336;
 			color: #F44336;
+		}
+
+		.fa-home:hover {
+			transform: rotate(-10deg);
 		}
 
 	</style>

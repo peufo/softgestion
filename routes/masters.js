@@ -4,14 +4,12 @@ var fs = require('fs')
 var path = require('path')
 var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
 var formidable = require('formidable') //Upload files
-var ncp = require('ncp').ncp	//Recursif
-ncp.limit = 2
+var ncp = require('ncp').ncp	//Copy Recursif
+ncp.limit = 3
 
 
 router
 	.post('/', (req, res, next) => {
-		//TODO: Créer le fichier d'initialisation CHANGELOG.md
-		//TODO: Tester l'éxistance du dossier et traiter le cas (plutot côté client)
 
 		var form = new formidable.IncomingForm()
 
@@ -43,7 +41,6 @@ router
 		if (req.body.section) {
 			var source = path.join(paths.master, req.params.folderName)
 			var destination = path.join(paths.copy, req.body.section, req.params.folderName)
-			console.log(destination)
 			ncp(source, destination, err => {
 				if (!err) res.json({success: true})
 				else next(err)
@@ -62,14 +59,14 @@ var createMaster = (folderName, files, cb) => {
 				if (!err) {
 					Promise.all(files.map(f => createFilePromise(folderName, f)))
 					.then(() => {
-						console.log('files copied')
-						cb(null)
+						//Création de son répertoire dans le backup
+						fs.mkdir(path.join(paths.backup, folderName), err => {
+							if (!err) {
+								cb(null)
+							}else cb(err)
+						})
 					})
-					.catch(err => {
-						console.log('Failed')
-						console.log(err)
-						cb(err)
-					})
+					.catch(cb)
 				}else cb(err)
 			})
 		}else cb(err)

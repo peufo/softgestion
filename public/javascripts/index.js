@@ -27,7 +27,6 @@ $(()=>{
 
 
 	//MASTERS
-
 	function showMasters(){
 		$('#masters').html('')
 		masters.forEach(addMaster)
@@ -42,6 +41,7 @@ $(()=>{
 					<a href="${paths.master}/${master}">
 						<i class="far fa-folder-open"></i>
 					</a>&nbsp;&nbsp;
+					<i class="far fa-copy"></i>&nbsp;&nbsp;
 					<i class="fas fa-history"></i>&nbsp;&nbsp;
 					<i class="fas fa-download"></i>
 				</span>
@@ -87,8 +87,20 @@ $(()=>{
 		}
 	})
 
-	$('#openaddmaster').click(function(){
+	$('#openaddmaster').click(function() {
 		$('#selectfolder').click()
+	})
+
+	$('.toogleList').click(function() {
+		if ($('#listTitle').text() == 'Copies') {
+			$('#listTitle').text('Archives')
+			$('#backups, .toogleList.fa-history').removeClass('w3-hide')
+			$('#copies, .toogleList.fa-copy').addClass('w3-hide')
+		}else{
+			$('#listTitle').text('Copies')
+			$('#copies, .toogleList.fa-copy').removeClass('w3-hide')
+			$('#backups, .toogleList.fa-history').addClass('w3-hide')
+		}
 	})
 
 	//TODO: change is the good event ?
@@ -117,6 +129,7 @@ $(()=>{
 					cache: false,
 					timeout: 600000,
 					success: function (data) {
+						console.log(data)
 						masters.push(folderName)
 						addMaster(folderName)
 						addMasterEvent()
@@ -206,7 +219,7 @@ $(()=>{
 				}
 
 			}else if ($(e.target).hasClass('fa-upload')) {	//Soumission de la copie
-				var comment = prompt('Quels sont les changement ?')
+				var comment = prompt('Quels sont les changements ?')
 				if (comment.length) {
 					$.post(`/copies/${copy}/pull`, {comment: comment}, res => {
 						if (res.success) {

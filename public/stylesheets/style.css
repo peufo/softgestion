@@ -1,3 +1,6 @@
+html {
+	overflow-y: hidden;
+}
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -7,7 +10,7 @@ a {
   text-decoration: none;
 }
 
-li, #openaddmaster, #closeChoiceCopySection, #CreateCopySection{
+li, #openaddmaster, .toogleList, #closeChoiceCopySection, #CreateCopySection{
 	cursor: pointer;
 }
 
@@ -15,8 +18,12 @@ li:hover{
 	border-left: 3px solid grey ;
 }
 
-li i:hover, #openaddmaster:hover, a>i:hover, #closeChoiceCopySection:hover{
+li i:hover, #openaddmaster:hover, .toogleList:hover, #closeChoiceCopySection:hover{
 	transform: scale(1.2);
+}
+
+.fa-cog:hover {
+	transform: rotate(20deg);
 }
 
 #CreateCopySection:hover{

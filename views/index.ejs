@@ -24,10 +24,12 @@
 
   		<div class="w3-col w3-padding m4">
   	 		<span class="w3-xlarge">
-          <i class="far fa-copy"></i>
-          Copies
+          <i class="toogleList far fa-copy"></i>
+          <i class="toogleList fas fa-history w3-hide"></i>
+          <span id="listTitle">Copies</span>
         </span>
   			<ul id="copies" class="w3-ul"></ul> 			
+        <ul id="backups" class="w3-ul w3-hide"></ul>       
   		</div>
 
   		<div id="viewer" class="w3-col m5"  style="height: calc(100% - 33px)">
@@ -38,6 +40,7 @@
     <form enctype="multipart/form-data">
       <input id="selectfolder" name="selectfolder" type="file" webkitdirectory directory multiple class="w3-hide"/>
     </form>
+
     <a href="/admin">
       <i class="fas fa-cog w3-xlarge w3-display-bottomleft w3-margin"></i>
     </a>

@@ -5,7 +5,7 @@ var path = require('path')
 var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
 var rimraf = require('rimraf')	//Remove Recursif
 var ncp = require('ncp').ncp	//Copy Recursif
-ncp.limit = 2
+ncp.limit = 3
 
 router
 	.get('/', (req, res, next) => {

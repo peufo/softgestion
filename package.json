@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=develpment PORT=3001 pm2 start --name devgestion app.js --watch & pm2 monit",
+    "dev": "cross-env NODE_ENV=development PORT=3001 pm2 start --name devgestion app.js --watch & pm2 monit",
     "prod": "cross-env NODE_ENV=production PORT=3000 pm2 start --name softgestion app.js & pm2 monit"
   },
   "dependencies": {

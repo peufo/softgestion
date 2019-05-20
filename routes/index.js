@@ -4,7 +4,7 @@ var fs = require('fs')
 var path = require('path')
 var paths = require('../data/paths.json')
 var ncp = require('ncp').ncp	//Recursif
-ncp.limit = 2
+ncp.limit = 3
 
 router
 	.get('/', (req, res, next) => {
