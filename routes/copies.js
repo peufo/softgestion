@@ -19,17 +19,36 @@ router
 			}else next(err)
 		})
 	})
-	.post('/section', (req, res, next) => {
-		fs.mkdir(path.join(paths.copy, req.body.section), err => {
+	.get('/section/:section', (req, res, next) => {
+		fs.readdir(path.join(paths.copy, req.params.section), (err, files) => {
 			if (!err) {
-				res.json({success: true, message: 'Section crée avec succèes !'})
+				res.json(files)
 			}else next(err)
-		})
+		})		
+	})
+	.get('/folder/:folderName', (req, res, next) => {
+		fs.readdir(path.normalize(paths.copy), (err, sections) => {
+			if (!err) {
+				var copies = []
+				sections.forEach(section => {
+					var folders = fs.readdirSync(path.join(paths.copy, section))
+					copies = [...copies, ...folders.filter(folder => folder == req.params.folderName)]
+				})
+				res.json(copies)
+			}else next(err)
+		})		
 	})
 	.get('/:section/:folderName', (req, res, next) => {
 		fs.readdir(path.join(paths.copy, req.params.section, req.params.folderName), (err, files) => {
 			if (!err) {
 				res.json(files)
+			}else next(err)
+		})
+	})
+	.post('/section', (req, res, next) => {
+		fs.mkdir(path.join(paths.copy, req.body.section), err => {
+			if (!err) {
+				res.json({success: true, message: 'Section crée avec succèes !'})
 			}else next(err)
 		})
 	})
@@ -43,7 +62,7 @@ router
 	.post('/:section/:folderName/pull', (req, res, next) => {
 		var source = path.join(paths.copy, req.params.section, req.params.folderName)
 		var destination = path.join(paths.pull, `${req.params.folderName}_${new Date().getTime()}`)
-		var log = `\n\n*${new Date().toLocaleString()}*\n#Modification proposé par {nom de l'utilisateur}\n->${req.body.comment}`
+		var log = `\n*${new Date().toLocaleString()}*\t#${req.body.comment}`
 		fs.appendFile(path.join(source, 'CHANGELOG.md'), log, err => {
 			if (!err) {
 				ncp(source, destination, err => {

@@ -15,7 +15,7 @@ router
 			pulls = pulls.map(pull => {
 				logs = fs.readFileSync(path.join(paths.pull, pull, 'CHANGELOG.md'), 'utf-8').split('\n')
 				return {
-					log: logs[logs.length - 1],
+					log: logs[logs.length - 1].split('\t')[1],
 					time: Number(pull.split('_')[1]),
 					pull: pull.split('_')[0]
 				}
@@ -33,18 +33,24 @@ router
 		var destination = path.join(paths.backup, name, String(new Date().getTime()))
 		ncp(source, destination, err => {
 			if (!err) {
-				var log = `\n\n*${new Date().toLocaleString()}*\n#Remplacé par une nouvelle version`
-				fs.appendFile(path.join(destination, 'CHANGELOG.md'), log, err => {
-					if (!err) {
+				//var log = `\n*${new Date().toLocaleString()}*\t#Remplacé par une nouvelle version`
+				//fs.appendFile(path.join(destination, 'CHANGELOG.md'), log, err => {
+				//	if (!err) {
 						source = path.join(paths.pull, req.params.folder)
 						destination = path.join(paths.master, name)
 						ncp(source, destination, err => {
 							if (!err) {
-								res.json({success: true, message: 'Modification accepté'})
+								rimraf(path.join(paths.pull, req.params.folder), err => {
+									if (!err) {
+										res.json({success: true, message: 'Modification accepté'})
+									}else next(err)
+								})
 							}else next(err)
 						})
-					}else next(err)
-				})
+
+
+				//	}else next(err)
+				//})
 			}else next(err)
 		})
 	})

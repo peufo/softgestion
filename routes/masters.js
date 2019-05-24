@@ -3,6 +3,7 @@ var router = express.Router()
 var fs = require('fs')
 var path = require('path')
 var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
+var utils = require('../utils')
 var formidable = require('formidable') //Upload files
 var ncp = require('ncp').ncp	//Copy Recursif
 ncp.limit = 3
@@ -42,7 +43,12 @@ router
 			var source = path.join(paths.master, req.params.folderName)
 			var destination = path.join(paths.copy, req.body.section, req.params.folderName)
 			ncp(source, destination, err => {
-				if (!err) res.json({success: true})
+				if (!err) 
+					utils.writelog(destination, `Copie pour ${req.body.log}`, err => {
+						if (!err) {
+							res.json({success: true})
+						}else next(err)
+					})
 				else next(err)
 			})			
 		}else next(Error('Section non défini !'))
@@ -54,7 +60,7 @@ var createMaster = (folderName, files, cb) => {
 	test.shift()
 	fs.mkdir(path.join(paths.master, folderName), err => {
 		if (!err) {
-			var log = `*Ce fichier est généré par l'application softgestion*\n\n*${new Date().toLocaleString()}*\n#Création du répertoire par {nom de l'utilisateur}`
+			var log = `*${new Date().toLocaleString()}*\t#Création du répertoire`
 			fs.writeFile(path.join(paths.master, folderName, 'CHANGELOG.md'), log, err => {
 				if (!err) {
 					Promise.all(files.map(f => createFilePromise(folderName, f)))
@@ -62,7 +68,14 @@ var createMaster = (folderName, files, cb) => {
 						//Création de son répertoire dans le backup
 						fs.mkdir(path.join(paths.backup, folderName), err => {
 							if (!err) {
-								cb(null)
+								//Création du premier backup
+								var source = path.join(paths.master, folderName)
+								var cible = path.join(paths.backup, folderName, String(new Date().getTime()))
+								ncp(source, cible, err => {
+									if (!err) {
+										cb(null)
+									}else cb(err)
+								})
 							}else cb(err)
 						})
 					})

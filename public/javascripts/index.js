@@ -25,7 +25,6 @@ $(()=>{
 		showCopiesSection()
 	})
 
-
 	//MASTERS
 	function showMasters(){
 		$('#masters').html('')
@@ -77,9 +76,14 @@ $(()=>{
 			master = $(e.target).parent().parent().data('master')
 
 			if ($(e.target).hasClass('fa-history')) {			//Afficher l'historique
-				console.log('Afficher l\'historique')
+				showBackups(master)
 
-
+			}else if ($(e.target).hasClass('fa-copy')) {	//Afficher les copies
+				$(`/folder/${master}`, res => {
+					//TODO: Afficher le dernier log
+					//TODO: Ajouter un log lors de la copy
+				})
+				showcopieslist()
 			}else if ($(e.target).hasClass('fa-download')) {	//Ouvre le choix de section pour créer une copie
 				masterCopied = master
 				$('#choiceCopySection').css('display', 'block')
@@ -87,20 +91,30 @@ $(()=>{
 		}
 	})
 
-	$('#openaddmaster').click(function() {
-		$('#selectfolder').click()
-	})
+
 
 	$('.toogleList').click(function() {
 		if ($('#listTitle').text() == 'Copies') {
-			$('#listTitle').text('Archives')
-			$('#backups, .toogleList.fa-history').removeClass('w3-hide')
-			$('#copies, .toogleList.fa-copy').addClass('w3-hide')
+			showbackupslist()
 		}else{
-			$('#listTitle').text('Copies')
-			$('#copies, .toogleList.fa-copy').removeClass('w3-hide')
-			$('#backups, .toogleList.fa-history').addClass('w3-hide')
+			showcopieslist()
 		}
+	})
+
+	function showbackupslist() {
+		$('#listTitle').text('Archives')
+		$('#backups, .toogleList.fa-history').removeClass('w3-hide')
+		$('#copies, .toogleList.fa-copy').addClass('w3-hide')
+	}
+
+	function showcopieslist() {
+		$('#listTitle').text('Copies')
+		$('#copies, .toogleList.fa-copy').removeClass('w3-hide')
+		$('#backups, .toogleList.fa-history').addClass('w3-hide')
+	}
+
+	$('#openaddmaster').click(function() {
+		$('#selectfolder').click()
 	})
 
 	//TODO: change is the good event ?
@@ -146,14 +160,45 @@ $(()=>{
 		
 	})
 
+	//BACKUPS
+	function showBackups(master){
+		showbackupslist()
+		$.get(`/backups/${master || ''}`, backups => {
+			$('#backups').html('')
+			backups.forEach(backup => {
+				$('#backups').append(`
+					<li data-backup="${backup.time}">
+						${backup.log}
+						<br>
+						${new Date(backup.time).toLocaleString()}
+						<span class="w3-right w3-hide">
+							<a href="${backup.path}">
+								<i class="far fa-folder-open"></i>
+							</a>&nbsp;&nbsp;
+						</span>
+					</li>
+				`)				
+			})
 
+			addBackupsEvent()
+		})
+	}
+
+	function addBackupsEvent() {
+		$('#backups li').hover(function(){
+			$(this).children('span').removeClass('w3-hide')
+		}, function(){
+			$(this).children('span').addClass('w3-hide')
+		})		
+	}
 
 	//COPIES
 
 	function showCopies(){
 
 		$('#copies').html('')
-		copies.forEach(addCopy)
+
+		copies.forEach(copy => addCopy(copy))
 		addCopyEvent()
 	}
 
@@ -207,7 +252,7 @@ $(()=>{
 
 			if ($(e.target).hasClass('fa-trash-alt')) {			//Suppression de la copie
 				
-				if (confirm(`Etes-vous sur de vouloir supprimer la copie "${copy}" ?\nLes modifications qui n'ont pas été uploader seront perdues !`)) {
+				if (confirm(`Etes-vous sur de vouloir supprimer la copie "${copy}" ?\n\nLes modifications qui n'ont pas été proposées seront perdues !`)) {
 					$.post(`/copies/${copy}/remove`, rep => {
 						if (rep.success) {
 							$(`#copy${copy.replace('\\', '')}`).remove()
@@ -239,7 +284,8 @@ $(()=>{
 	})
 
 	function postNewCopy(section, notNew){
-		$.post(`/masters/${masterCopied}/copy`, {section: section}, res => {
+		var log = prompt(`Quelle est la raison d'être de cette copie ?`)
+		$.post(`/masters/${masterCopied}/copy`, {section: section, log, log}, res => {
 			if (res.success) {
 				if (!notNew) {
 					copies.push(`${section}\\${masterCopied}`)
@@ -281,7 +327,6 @@ $(()=>{
 	$('#copiesSections').click(function(e) {
 		if (e.target.tagName  == 'LI') {
 			var section = $(e.target).text()
-			console.log(copies)
 			if (copies.indexOf(`${section}\\${masterCopied}`) == -1) {
 				postNewCopy(section)
 			}else{
@@ -293,6 +338,8 @@ $(()=>{
 	})
 
 	$('#closeChoiceCopySection').click(function() {
+		$('#searchCopySection').val('')		
+		$('#searchCopySection').keyup()		
 		$('#choiceCopySection').css('display', 'none')
 	})
 
