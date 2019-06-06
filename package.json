@@ -1,10 +1,29 @@
 {
   "name": "softgestion",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.8.2",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^1.10.1",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-multi-entry": "^2.1.0",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-scss": "^1.0.1",
+    "rollup-plugin-svelte": "^5.0.3",
+    "rollup-plugin-terser": "^4.0.4",
+    "rollup-plugin-url": "^2.2.1",
+    "svelte": "^3.0.0",
+    "w3-css": "^4.1.0"
+  },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development PORT=3001 pm2 start --name devgestion app.js --watch & pm2 monit",
-    "prod": "cross-env NODE_ENV=production PORT=3000 pm2 start --name softgestion app.js & pm2 monit"
+    "build": "rollup -c",
+    "autobuild": "rollup -c -w",
+    "start": "cross-env NODE_ENV=production pm2 start",
+    "start:dev": "cross-env NODE_ENV=development pm2 start",
+    "prod": "run-p build start",
+    "dev": "run-p start:dev autobuild"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

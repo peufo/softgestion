@@ -11,16 +11,18 @@ ncp.limit = 3
 
 router
 	.post('/', (req, res, next) => {
-
+		
 		var form = new formidable.IncomingForm()
 
 		form.parse(req, (err, fields) => {
 			if (!err) {
+
 				createMaster(fields.folderName, form.openedFiles, err => {
 					if (!err) {
 						res.json({success: true, message: 'New master created'})
 					}else next(err)
 				})
+				
 			}else next(err)
 		})
 	})

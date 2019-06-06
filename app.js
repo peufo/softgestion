@@ -4,14 +4,15 @@ var path = require('path')
 var paths = require('./data/paths.json') //Maintenir à jour ? lire à chaque fois ?
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
+var config = require('./config')
 
 var app = express()
-app.listen(process.env.PORT || 3000, () => {
-	console.log(`server listen on the port ${process.env.PORT}`)
+app.listen(config.PORT || 3000, () => {
+	console.log(`server listen on the port ${config.PORT}`)
 })
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'public', 'views'))
 app.set('view engine', 'ejs')
 
 app.use(logger('dev'))
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public', 'views')))
 app.use(express.static(path.normalize(paths.master)))
 app.use(express.static(path.normalize(paths.copy)))
 app.use(express.static(path.normalize(paths.pull)))
@@ -45,11 +47,13 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-  console.log(err)
-
   // render the error page
   res.status(err.status || 500)
-  res.render('error')
+  if (req.xhr) {
+  	res.json({success: false, error: err})
+  }else{
+  	res.render('error')
+  }
 })
 
 module.exports = app

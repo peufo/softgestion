@@ -13,13 +13,33 @@ router
 			if (!err) {
 				var copies = []
 				sections.forEach(section => {
-					copies = [...copies, ...fs.readdirSync(path.join(paths.copy, section)).map(copy => path.join(section, copy))]
+					copies = [...copies, ...fs.readdirSync(path.join(paths.copy, section)).map(copy => {
+						return {
+							name: copy,
+							section
+						}
+					})]
 				})
-				res.json({copies: copies, sections: sections})
+				res.json(copies)
 			}else next(err)
 		})
 	})
-	.get('/section/:section', (req, res, next) => {
+	.post('/sections', (req, res, next) => {
+		console.log(req.body)
+		fs.mkdir(path.join(paths.copy, req.body.section), err => {
+			if (!err) {
+				res.json({success: true, message: 'Section crée avec succèes !'})
+			}else next(err)
+		})
+	})
+	.get('/sections', (req, res, next) => {
+		fs.readdir(path.join(paths.copy), (err, files) => {
+			if (!err) {
+				res.json(files)
+			}else next(err)
+		})		
+	})
+	.get('/sections/:section', (req, res, next) => {
 		fs.readdir(path.join(paths.copy, req.params.section), (err, files) => {
 			if (!err) {
 				res.json(files)
@@ -42,13 +62,6 @@ router
 		fs.readdir(path.join(paths.copy, req.params.section, req.params.folderName), (err, files) => {
 			if (!err) {
 				res.json(files)
-			}else next(err)
-		})
-	})
-	.post('/section', (req, res, next) => {
-		fs.mkdir(path.join(paths.copy, req.body.section), err => {
-			if (!err) {
-				res.json({success: true, message: 'Section crée avec succèes !'})
 			}else next(err)
 		})
 	})

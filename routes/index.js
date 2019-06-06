@@ -8,7 +8,7 @@ ncp.limit = 3
 
 router
 	.get('/', (req, res, next) => {
-		res.render('index', { title: 'Express' })
+		res.send('index')
 	})
 	.get('/admin', (req, res, next) => {
 		res.render('admin')
