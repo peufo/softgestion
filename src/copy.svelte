@@ -1,5 +1,8 @@
 <script>
 	import { paths } from './stores.js'
+	import { createEventDispatcher } from 'svelte'
+	const dispatch = createEventDispatcher()
+
 	export let name
 	export let section
 	export let log
@@ -19,7 +22,7 @@
 		<a href="{$paths.copy}/{section}/{name}">
 			<i class="far fa-folder-open"></i>
 		</a>&nbsp;&nbsp;
-		<i class="far fa-trash-alt"></i>&nbsp;&nbsp;
+		<i class="far fa-trash-alt" on:click="{() => dispatch('clicktrash')}"></i>&nbsp;&nbsp;
 		<i class="fas fa-upload"></i>
 	</span>
 </li>
