@@ -20,7 +20,6 @@
 
 				fetch('masters', {
 					method: 'POST',
-					contentType: 'multipart/form-data',
 					body: formData
 				})
 				.then(res => res.json())

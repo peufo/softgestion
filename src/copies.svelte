@@ -1,5 +1,5 @@
 <script>
-	import Copy from './copy.svelte'
+	import Copy from './Copy.svelte'
 	import { copies } from './stores.js'
 </script>
 

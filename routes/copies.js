@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var fs = require('fs')
 var path = require('path')
+var utils = require('../utils')
 var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
 var rimraf = require('rimraf')	//Remove Recursif
 var ncp = require('ncp').ncp	//Copy Recursif
@@ -24,8 +25,26 @@ router
 			}else next(err)
 		})
 	})
+	.post('/', (req, res, next) => {
+		if (req.body.section) {
+			var source = path.join(paths.master, req.body.master)
+			var destination = path.join(paths.copy, req.body.section, req.body.master)
+			//Evite l'absence de log
+			fs.access(path.join(destination, 'CHANGELOG.md'), err => {
+				if (!err) fs.unlinkSync(path.join(destination, 'CHANGELOG.md'))
+				ncp(source, destination, err => {
+					if (!err) 
+						utils.writelog(destination, `Copie pour ${req.body.log}`, err => {
+							if (!err) {
+								res.json({success: true})
+							}else next(err)
+						})
+					else next(err)
+				})	
+			})
+		}else next(Error('Section non défini !'))
+	})
 	.post('/sections', (req, res, next) => {
-		console.log(req.body)
 		fs.mkdir(path.join(paths.copy, req.body.section), err => {
 			if (!err) {
 				res.json({success: true, message: 'Section crée avec succèes !'})

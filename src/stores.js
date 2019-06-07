@@ -4,7 +4,7 @@ export let paths = readable([], getPaths)
 export let masters = writable([], getMasters)
 export let masterSelected = writable('')
 export let copies = writable([], getCopies)
-export let sections = readable([], getSections)
+export let sections = writable([], getSections)
 
 function getPaths(set) {
 	fetch('paths').then(res => res.json()).then(set)	
