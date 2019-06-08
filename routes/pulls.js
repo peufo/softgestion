@@ -6,6 +6,7 @@ var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque f
 var rimraf = require('rimraf')	//Remove Recursif
 var ncp = require('ncp').ncp	//Copy Recursif
 ncp.limit = 3
+var utils = require('../utils')
 
 router
 	.get('/', (req, res, next) => {
@@ -13,9 +14,8 @@ router
 		fs.readdir(paths.pull, (err, pulls) => {
 
 			pulls = pulls.map(pull => {
-				logs = fs.readFileSync(path.join(paths.pull, pull, 'CHANGELOG.md'), 'utf-8').split('\n')
 				return {
-					log: logs[logs.length - 1].split('\t')[1],
+					log: utils.getLastLog(path.join(paths.pull, pull)),
 					time: Number(pull.split('_')[1]),
 					pull: pull.split('_')[0]
 				}

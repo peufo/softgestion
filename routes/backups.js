@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+var utils = require('../utils')
 var fs = require('fs')
 var path = require('path')
 var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
@@ -25,19 +26,17 @@ router
 	})
 
 function getHistorique(folder) {
-	var files = fs.readdirSync(path.join(paths.backup, folder))
-	if (files) {
-		var backups = files.map(file => {
-			var logs = fs.readFileSync(path.join(paths.backup, folder, file, 'CHANGELOG.md'), 'utf-8')
-			if (logs) {
-				logs = logs.split('\n')
-				var backup = {
-					log: `${logs[logs.length - 1].split('\t')[1]}`,
-					time: Number(file),
-					path: path.join(paths.backup, folder, file)
-				}
-				return backup
+	var versions = fs.readdirSync(path.join(paths.backup, folder))
+	if (versions) {
+		var backups = versions.map(version => {
+			var myPath = path.join(paths.backup, folder, version)
+			var backup = {
+				log: utils.getLastLog(myPath),
+				time: Number(version),
+				path: myPath
 			}
+			return backup
+
 		})
 	}
 	return backups

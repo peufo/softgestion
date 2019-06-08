@@ -47,7 +47,7 @@ var createMaster = (folderName, files, cb) => {
 	test.shift()
 	fs.mkdir(path.join(paths.master, folderName), err => {
 		if (!err) {
-			var log = `*${new Date().toLocaleString()}*\t#Création du répertoire`
+			var log = `*${new Date().toLocaleString()}*\tCréation du répertoire`
 			fs.writeFile(path.join(paths.master, folderName, 'CHANGELOG.md'), log, err => {
 				if (!err) {
 					Promise.all(files.map(f => createFilePromise(folderName, f)))

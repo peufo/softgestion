@@ -30,11 +30,11 @@
 	}
 
 	function createCopy(section) {
-		var log = prompt(`Quelle est la raison d'être de cette copie ?`)
+		let log = prompt(`Quelle est la raison d'être de cette copie ?`)
 		if (log) {
-			var copy = { master: $masterSelected, section, log }
-			var exist = $copies.map(c => `${c.section}/${c.name}`).indexOf(`${copy.section}/${copy.master}`) != -1
-			if (!exist || confirm(`Cette copie existes déjà à cette emplacement !\nSouhaitez-vous l'écraser ?`)) {
+			let copy = { master: $masterSelected, section, log }
+			let index = $copies.map(c => `${c.section}/${c.name}`).indexOf(`${copy.section}/${copy.master}`)
+			if (index == -1 || confirm(`Cette copie existes déjà à cette emplacement !\nSouhaitez-vous l'écraser ?`)) {
 				fetch('copies', {
 					method: 'POST',
 					headers: {'Content-Type': 'application/json'},
@@ -44,7 +44,14 @@
 				.then(data => {
 					if (data.success) {
 						copy.name = copy.master
-						if (!exist) copies.update(c => [copy, ...c])
+						if (index == -1 ){
+							copies.update(c => [copy, ...c])
+						}else{
+							copies.update(c => {
+								c[index].log = log
+								return c
+							})
+						}
 					}else {
 						alert(data.message)
 					}

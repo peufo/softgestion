@@ -17,7 +17,8 @@ router
 					copies = [...copies, ...fs.readdirSync(path.join(paths.copy, section)).map(copy => {
 						return {
 							name: copy,
-							section
+							section,
+							log: utils.getLastLog(path.join(paths.copy, section, copy))
 						}
 					})]
 				})
@@ -94,7 +95,7 @@ router
 	.post('/:section/:folderName/pull', (req, res, next) => {
 		var source = path.join(paths.copy, req.params.section, req.params.folderName)
 		var destination = path.join(paths.pull, `${req.params.folderName}_${new Date().getTime()}`)
-		var log = `\n*${new Date().toLocaleString()}*\t#${req.body.comment}`
+		var log = `\n*${new Date().toLocaleString()}*\t${req.body.comment}`
 		fs.appendFile(path.join(source, 'CHANGELOG.md'), log, err => {
 			if (!err) {
 				ncp(source, destination, err => {

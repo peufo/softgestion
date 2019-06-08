@@ -19,6 +19,33 @@
 		}
 	}
 
+	function pullCopy(copy) {
+		var comment = prompt('Quels sont les changements ?')
+		if (comment) {
+			fetch(`/copies/${copy.section}/${copy.name}/pull`, {
+				method: 'POST',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({comment})
+			})
+			.then(res => res.json())
+			.then(data => {
+				if (data.success) {
+					alert(`Merci !\n\nVos modifications seront prise en compte dés qu'elles seront validé !` )
+					let index = $copies.map(c => `${c.section}/${c.name}`).indexOf(`${copy.section}/${copy.name}`)
+					copies.update(c => {
+						c[index].log = comment
+						return c
+					})
+				}else{
+					alert(data.message)
+				}
+			})
+
+		}else{
+			alert('Vous devez faire un commentaire !')
+		}
+	}
+
 </script>
 
 <style>
@@ -36,6 +63,7 @@
 			<Copy 
 				{...copy}
 				on:clicktrash="{() => removeCopy(copy)}"
+				on:clickupload="{() => pullCopy(copy)}"
 			/>
 		{:else}
 			<div class="w3-center w3-xlarge w3-spin"><i class="fas fa-sync-alt"></i></div>
