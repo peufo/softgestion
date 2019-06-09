@@ -16,6 +16,7 @@ app.listen(config.PORT || 3000, () => {
 app.set('views', path.join(__dirname, 'public', 'views'))
 app.set('view engine', 'ejs')
 
+
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))

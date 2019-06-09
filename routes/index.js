@@ -29,6 +29,24 @@ router
 			})			
 		}else next(Error('Donnée absente !'))
 	})
+	.get('/checkpwd/', (req, res, next) => {
+		var pwd = fs.readFileSync(path.join(__dirname, '..', 'data', 'password'), 'utf-8')
+		res.json({success: pwd == ''})
+	})
+	.get('/checkpwd/:pwd', (req, res, next) => {
+		var pwd = fs.readFileSync(path.join(__dirname, '..', 'data', 'password'), 'utf-8')
+		res.json({success: pwd == req.params.pwd})
+	})
+	.post('/pwd', (req, res, next) => {
+		var pwd = fs.readFileSync(path.join(__dirname, '..', 'data', 'password'), 'utf-8')
+		if (pwd == req.body.oldpwd) {
+			fs.writeFile(path.join(__dirname, '..', 'data', 'password'), req.body.newpwd, err => {
+				if (!err) {
+					res.json({success: true})
+				}else next(err)
+			})
+		}else res.json({success: false})
+	})
 
 
 module.exports = router
