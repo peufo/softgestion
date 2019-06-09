@@ -20,7 +20,9 @@
 			folderName = folderName.replace(/[^a-zA-Z0-9]/g, '')
 
 			//TODO: L'écrasement de fonctionne pas côté serveur!!! le supprimer ?
-			if ($masters.indexOf(folderName) == -1 || confirm(`Attention, le dossier ${folderName} existe déjà !\n Etes-vous sur de vouloir l'écraser`)){
+			if ($masters.indexOf(folderName) != -1){
+				alert(`Désolé, le dossier "${folderName}" éxiste déjà !\nVous ne pouvez pas l'écraser !`)
+			}else{
 
 				formData.append('folderName', folderName)
 
