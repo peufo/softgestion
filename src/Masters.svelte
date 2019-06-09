@@ -4,6 +4,10 @@
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 
+	export let search = ''
+
+	$: console.log(search)
+
 	function openSelectFolder() {
 		document.getElementById('selectfolder').click()
 	}
@@ -88,7 +92,10 @@
 	<ul class="w3-ul">
 		{#each $masters as master}
 
-			<li on:click="{() => selectMaster(master)}" class:selected="{$masterSelected == master}" transition:slide>
+			<li class:w3-hide="{master.toLowerCase().indexOf(search) == -1}" 
+				on:click="{() => selectMaster(master)}" 
+				class:selected="{$masterSelected == master}" 
+				transition:slide>
 				<b>{master}</b>
 				<span class="w3-right">
 					<a href="{$paths.master}/{name}">

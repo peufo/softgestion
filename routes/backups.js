@@ -5,7 +5,6 @@ var fs = require('fs')
 var path = require('path')
 var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
 
-
 router
 	.get('/', (req, res, next) => {
 		fs.readdir(paths.backup, (err, folders) => {
