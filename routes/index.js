@@ -29,13 +29,9 @@ router
 			})			
 		}else next(Error('Donnée absente !'))
 	})
-	.get('/checkpwd/', (req, res, next) => {
+	.post('/checkpwd', (req, res, next) => {
 		var pwd = fs.readFileSync(path.join(__dirname, '..', 'data', 'password'), 'utf-8')
-		res.json({success: pwd == ''})
-	})
-	.get('/checkpwd/:pwd', (req, res, next) => {
-		var pwd = fs.readFileSync(path.join(__dirname, '..', 'data', 'password'), 'utf-8')
-		res.json({success: pwd == req.params.pwd})
+		res.json({success: pwd == req.body.pwd})
 	})
 	.post('/pwd', (req, res, next) => {
 		var pwd = fs.readFileSync(path.join(__dirname, '..', 'data', 'password'), 'utf-8')

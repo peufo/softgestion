@@ -34,7 +34,7 @@ module.exports = {
 			if (req.originalUrl == '/paths') {
 				req.paths = paths
 				next()
-			}else if (req.originalUrl == '/' || req.originalUrl == '/admin') {
+			}else if (req.originalUrl == '/' || req.originalUrl == '/admin' || req.originalUrl == '/checkpwd') {
 				next()
 			}else{
 				next(Error('Paths is invalid !'))

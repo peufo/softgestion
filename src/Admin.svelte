@@ -77,8 +77,7 @@
 	let newpwd = ''
 	let newpwdConfirm = ''
 	let unlock = false
-	fetch('checkpwd').then(res => res.json()).then(data => unlock = data.success)
-
+	unlockAdmin()
 
 	function changePwd() {
 		fetch('pwd', {
@@ -96,7 +95,11 @@
 	}
 
 	function unlockAdmin() {
-		fetch(`checkpwd/${pwd}`)
+		fetch(`checkpwd`, {
+			method: 'POST',
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({pwd})
+		})
 		.then(res => res.json())
 		.then(data => {
 			pwd = ''
