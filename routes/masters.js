@@ -2,7 +2,6 @@ var express = require('express')
 var router = express.Router()
 var fs = require('fs')
 var path = require('path')
-var paths = require('../data/paths.json') //Maintenir à jour ? lire à chaque fois ?
 var utils = require('../utils')
 var formidable = require('formidable') //Upload files
 var ncp = require('ncp').ncp	//Copy Recursif
@@ -27,14 +26,14 @@ router
 		})
 	})
 	.get('/', (req, res, next) => {
-		fs.readdir(paths.master, (err, files) => {
+		fs.readdir(req.paths.master, (err, files) => {
 			if (!err) {
 				res.json(files)
 			}else next(err)
 		})
 	})
 	.get('/:folderName', (req, res, next) => {
-		fs.readdir(path.join(paths.master, req.params.folderName), (err, files) => {
+		fs.readdir(path.join(req.paths.master, req.params.folderName), (err, files) => {
 			if (!err) {
 				res.json(files)
 			}else next(err)
@@ -45,18 +44,18 @@ router
 var createMaster = (folderName, files, cb) => {
 	var test = files[0].name.split('/')
 	test.shift()
-	fs.mkdir(path.join(paths.master, folderName), err => {
+	fs.mkdir(path.join(req.paths.master, folderName), err => {
 		if (!err) {
-			utils.writeLog(path.join(paths.master, folderName), `Création du répertoire`, err => {
+			utils.writeLog(path.join(req.paths.master, folderName), `Création du répertoire`, err => {
 				if (!err) {
-					Promise.all(files.map(f => createFilePromise(folderName, f)))
+					Promise.all(files.map(f => createFilePromise(req, folderName, f)))
 					.then(() => {
 						//Création de son répertoire dans le backup
-						fs.mkdir(path.join(paths.backup, folderName), err => {
+						fs.mkdir(path.join(req.paths.backup, folderName), err => {
 							if (!err) {
 								//Création du premier backup
-								var source = path.join(paths.master, folderName)
-								var cible = path.join(paths.backup, folderName, String(new Date().getTime()))
+								var source = path.join(req.paths.master, folderName)
+								var cible = path.join(req.paths.backup, folderName, String(new Date().getTime()))
 								ncp(source, cible, err => {
 									if (!err) {
 										cb(null, {
@@ -78,12 +77,12 @@ var createMaster = (folderName, files, cb) => {
 }
 
 
-var createFilePromise = (folderName, file) => {
+var createFilePromise = (req, folderName, file) => {
 	var names = file.name.split('/')
 	if (names.length == 2) {
 		var name = names[1]
 		return new Promise((resolve, reject) => {
-			var newPath = path.join(paths.master, folderName, name)
+			var newPath = path.join(req.paths.master, folderName, name)
 			fs.rename(file.path, newPath, err => {
 				if (!err) resolve()
 				else reject(err)

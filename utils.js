@@ -1,5 +1,6 @@
 var fs = require('fs')
 var path = require('path')
+var createError = require('http-errors')
 
 module.exports = {
 	writeLog: (folder, log, cb) => {
@@ -23,5 +24,24 @@ module.exports = {
 			var lastLine = logs[logs.length - 2]
 			return new Date(lastLine.split('\t')[0]).getTime()
 		}else return ''
+	},
+
+	getPaths: (req, res, next) => {
+		var paths = fs.readFileSync(path.join(__dirname, 'data', 'paths.json'), 'utf-8')
+		paths = JSON.parse(paths)
+		var validePaths = paths.master && paths.copy && paths.pull && paths.backup
+		if (!validePaths) {
+			if (req.originalUrl == '/paths') {
+				req.paths = paths
+				next()
+			}else if (req.originalUrl == '/' || req.originalUrl == '/admin') {
+				next()
+			}else{
+				next(Error('Paths is invalid !'))
+			}
+		}else{
+			req.paths = paths
+			next()
+		}
 	}
 }

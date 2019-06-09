@@ -100,7 +100,7 @@
 				transition:slide>
 				<b>{master}</b>
 				<span class="w3-right">
-					<a href="{$paths.master}/{name}">
+					<a href="{$paths.master}/{master.name}">
 						<i class="far fa-folder-open"></i>
 					</a>&nbsp;&nbsp;
 					<i class="far fa-copy"		on:click="{() => showCopies(master)}"	></i>&nbsp;&nbsp;

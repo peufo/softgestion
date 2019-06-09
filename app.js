@@ -5,6 +5,7 @@ var paths = require('./data/paths.json') //Maintenir à jour ? lire à chaque fo
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var config = require('./config')
+var utils = require('./utils')
 
 var app = express()
 app.listen(config.PORT || 3000, () => {
@@ -25,6 +26,8 @@ app.use(express.static(path.normalize(paths.copy)))
 app.use(express.static(path.normalize(paths.pull)))
 app.use(express.static(path.normalize(paths.backup)))
 
+//Lecture de paths.json
+app.use(utils.getPaths)
 
 //ROUTAGE
 app.use('/', require('./routes/index'))
@@ -45,8 +48,6 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-  console.log(err)
 
   // render the error page
   res.status(err.status || 500)

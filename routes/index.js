@@ -2,19 +2,22 @@ var express = require('express')
 var router = express.Router()
 var fs = require('fs')
 var path = require('path')
-var paths = require('../data/paths.json')
 var ncp = require('ncp').ncp	//Recursif
 ncp.limit = 3
 
 router
 	.get('/', (req, res, next) => {
-		res.sendFile(path.join(__dirname, '..', 'public', 'views', 'index.html'))
+		if (!req.paths) {
+			res.redirect('/admin')
+		}else{
+			res.sendFile(path.join(__dirname, '..', 'public', 'views', 'index.html'))
+		}
 	})
 	.get('/admin', (req, res, next) => {
 		res.sendFile(path.join(__dirname, '..', 'public', 'views', 'admin.html'))
 	})
 	.get('/paths', (req, res, next) => {
-		res.json(paths)
+		res.json(req.paths)
 	})
 	.post('/paths', (req, res, next) => {
 		if (req.body.master && req.body.copy && req.body.pull && req.body.backup) {
