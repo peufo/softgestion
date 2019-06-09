@@ -17,9 +17,9 @@ router
 		form.parse(req, (err, fields) => {
 			if (!err) {
 
-				createMaster(fields.folderName, form.openedFiles, err => {
+				createMaster(fields.folderName, form.openedFiles, (err, backup) => {
 					if (!err) {
-						res.json({success: true, message: 'New master created'})
+						res.json({success: true, message: 'New master created', backup})
 					}else next(err)
 				})
 				
@@ -47,8 +47,7 @@ var createMaster = (folderName, files, cb) => {
 	test.shift()
 	fs.mkdir(path.join(paths.master, folderName), err => {
 		if (!err) {
-			var log = `*${new Date().toLocaleString()}*\tCréation du répertoire`
-			fs.writeFile(path.join(paths.master, folderName, 'CHANGELOG.md'), log, err => {
+			utils.writeLog(path.join(paths.master, folderName), `Création du répertoire`, err => {
 				if (!err) {
 					Promise.all(files.map(f => createFilePromise(folderName, f)))
 					.then(() => {
@@ -60,7 +59,12 @@ var createMaster = (folderName, files, cb) => {
 								var cible = path.join(paths.backup, folderName, String(new Date().getTime()))
 								ncp(source, cible, err => {
 									if (!err) {
-										cb(null)
+										cb(null, {
+											log: `Création du répertoire`,
+											time: new Date().getTime(),
+											path: cible,
+											name: folderName
+										})
 									}else cb(err)
 								})
 							}else cb(err)

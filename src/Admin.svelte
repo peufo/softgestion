@@ -1,18 +1,12 @@
 <script>
-	import { paths, pulls } from './stores.js'
+	import { paths, pulls, copies } from './stores.js'
+	import { slide } from 'svelte/transition'
+
 	let tab = 0
 
-	function savePaths() {
-		fetch('paths', {
-			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify($paths)
-		}).then(res => res.json())
-		.then(data => {
-			alert(data.message)
-		})
-	}
 
+
+	//Gestion des modifications
 	function removePull(pull) {
 		if (confirm('Etes-vous sur de vouloir refuser cette modification ?\nLe dossier en attente de validation sera supprimer !')) {
 
@@ -48,6 +42,48 @@
 		*/
 	}
 
+	//Gestion des copies
+	const DAY = 1000*60*60*24
+	let daysLimite = -365
+	let copiesRemoved = []
+	$: copiesRemoved = $copies.filter(copy => copy.time < new Date().getTime() + daysLimite * DAY)
+
+	function toggleUnselectCopy(i) {
+		copiesRemoved[i].unselect = !copiesRemoved[i].unselect
+	}
+
+	function removeCopies() {
+		let copiesRemovedConfirmed = copiesRemoved.filter(copy => !copy.unselect)
+		if (confirm(`Etes-vous certain de vouloir supprimer tous les éléments séléctionés ?`)) {
+			Promise.all(copiesRemovedConfirmed.map(copy => {
+				return fetch(`copies/${copy.section}/${copy.name}/remove`, {
+					method: 'POST',
+					headers: {"Content-Type": "application/json"}
+				})
+			}))
+			.then(() => {
+				let crcTimes = copiesRemovedConfirmed.map(c => c.time)
+				$copies = $copies.filter(copy => crcTimes.indexOf(copy.time) == -1)
+			})
+			.catch(() => {
+				alert('Erreur')
+			})
+		}
+	}
+
+
+	//Gestion des chemins
+	function savePaths() {
+		fetch('paths', {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify($paths)
+		}).then(res => res.json())
+		.then(data => {
+			alert(data.message)
+		})
+	}
+
 </script>
 
 <style>	
@@ -57,10 +93,13 @@
 	body {
 	  padding: 50px;
 	  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-	  
 	}
 
-	#menu li {
+	a {
+		text-decoration: none;
+	}
+
+	#menu li, #copies li i {
 		cursor: pointer;
 	}
 
@@ -69,12 +108,23 @@
 	}
 
 	#editPlace .content{
-		height: calc(100% - 000px) !important;
+		height: 100%;
 	}
 
-	#editPlace ul {
+	#pulls {
 		max-height: calc(100% - 72px);
 		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	#copies {
+		max-height: calc(100% - 180px);
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	#copies li i:hover {
+		transform: scale(1.1);
 	}
 
 	.selected {
@@ -137,7 +187,7 @@
 
 			<span class="w3-small">
 				{#if $pulls.length == 0}
-					Pas de validation en attente
+					Aucune validation en attente
 				{:else if $pulls.length == 1}
 					Une modification en attente
 				{:else}
@@ -147,14 +197,18 @@
 			<br><br>
 
 			<ul id="pulls" class="w3-ul">
-				{#each $pulls as pull}
-					<li>
-						<span class="w3-large">{pull.pull}</span>
-						<span class="w3-small w3-opacity">{new Date(pull.time).toLocaleString()}</span>
+				{#each $pulls as pull (pull.time)}
+
+					<li transition:slide>
 						<i on:click="{() => acceptPull(pull)}"  class="acceptpull fas fa-check w3-xlarge w3-right w3-button w3-round"></i>
-						<i on:click="{() => removePull(pull)}" class="removepull fas fa-times w3-xlarge w3-right w3-button w3-round"></i>					
-						<br><span>{pull.log.replace('->', '- ')}</span>
+						<i on:click="{() => removePull(pull)}" class="removepull fas fa-times w3-xlarge w3-right w3-button w3-round"></i>	
+						<a href="{pull.path}">
+							<b>{pull.log}</b><br>
+							<span class="w3-large">{pull.pull}</span>
+							<span class="w3-small w3-opacity">{new Date(pull.time).toLocaleString()}</span>
+						</a>
 					</li>
+
 				{/each}
 			</ul>
 			
@@ -167,8 +221,64 @@
 			<span class="w3-xlarge">
 				<i class="far fa-copy"></i>
 				Gestion des copies
-			</span><br><br><br>
-			Gestion des copies
+			</span><br><br>
+			
+			{#if $copies.length == 0}
+				<span class="w3-large">
+					Aucune copie en circulation !
+					<i class="fa fa-check"></i>
+				</span>	
+			{:else }
+
+				<!-- Selection de la limite -->
+				<div class="w3-border w3-round w3-padding">
+
+					{#if daysLimite == 0}
+						<h3>Toutes les copies</h3>
+					{:else}
+						<h3>Copies datant de plus de {-daysLimite} jours</h3>
+					{/if}
+
+					<input bind:value={daysLimite} type="range" name="daysLimite" min="-360" max="0" step="10">
+
+					{#if copiesRemoved.filter(copy => !copy.unselect).length}
+						<span on:click={removeCopies} class="w3-button w3-border w3-round w3-large w3-right w3-red">
+							<i class="far fa-trash-alt"></i>
+							Supprimer la sélection ({copiesRemoved.filter(copy => !copy.unselect).length})
+						</span>
+					{/if}
+
+				</div>
+
+				<ul id="copies" class="w3-ul w3-margin">
+					{#each copiesRemoved as copy, i}
+						<li transition:slide class:w3-opacity={copy.unselect}>
+							<span class="w3-left w3-xlarge fa-stack">
+								<i on:click="{() => toggleUnselectCopy(i)}" class="far fa-trash-alt fa-stack-1x"></i>
+								{#if copy.unselect}
+									<i on:click="{() => toggleUnselectCopy(i)}" class="fa fa-ban fa-stack-2x"></i>
+								{/if}
+							</span>
+							<div>
+								<em class="w3-right log">{copy.section}</em>
+								<a href="{copy.path}">								
+									<b>{copy.log.replace('Copie pour ', '')}</b><br>
+									<span class="w3-large">{copy.name}</span>
+									<span class="w3-small w3-opacity">{new Date(copy.time).toLocaleString()}</span>
+								</a>	
+							</div>
+						</li>
+					{:else}
+						<span class="w3-large">
+							Pas de copie aussi ancienne !
+							<i class="fa fa-check"></i>
+						</span>
+					{/each}
+				</ul>
+
+
+
+			{/if} 
 
 		</div>
 

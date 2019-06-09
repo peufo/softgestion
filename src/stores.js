@@ -6,6 +6,8 @@ export let masterSelected = writable('')
 export let copies = writable([], getCopies)
 export let sections = writable([], getSections)
 export let pulls = writable([], getPulls)
+export let backups = writable([], getBackups)
+export let view = writable('') //copies or backups
 
 function getPaths(set) {
 	fetch('paths').then(res => res.json()).then(set)	
@@ -16,7 +18,11 @@ function getMasters(set) {
 }
 
 function getCopies(set) {
-	fetch('copies').then(res => res.json()).then(set)	
+	fetch('copies').then(res => res.json())
+	.then(data => {
+		data.sort((a, b) => b.time - a.time)
+		set(data)
+	})	
 }
 
 function getSections(set) {
@@ -29,4 +35,8 @@ function getPulls(set) {
 		data.sort((a, b) => a.time - b.time)
 		set(data)
 	})	
+}
+
+function getBackups(set) {
+	fetch('backups').then(res => res.json()).then(set)	
 }

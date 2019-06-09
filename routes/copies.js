@@ -18,7 +18,9 @@ router
 						return {
 							name: copy,
 							section,
-							log: utils.getLastLog(path.join(paths.copy, section, copy))
+							log: utils.getLastLog(path.join(paths.copy, section, copy)),
+							time: utils.getLastTime(path.join(paths.copy, section, copy)),
+							path: path.join(paths.copy, section, copy)
 						}
 					})]
 				})
@@ -35,7 +37,7 @@ router
 				if (!err) fs.unlinkSync(path.join(destination, 'CHANGELOG.md'))
 				ncp(source, destination, err => {
 					if (!err) 
-						utils.writelog(destination, `Copie pour ${req.body.log}`, err => {
+						utils.writeLog(destination, `Copie pour ${req.body.log}`, err => {
 							if (!err) {
 								res.json({success: true})
 							}else next(err)
@@ -95,14 +97,13 @@ router
 	.post('/:section/:folderName/pull', (req, res, next) => {
 		var source = path.join(paths.copy, req.params.section, req.params.folderName)
 		var destination = path.join(paths.pull, `${req.params.folderName}_${new Date().getTime()}`)
-		var log = `\n*${new Date().toLocaleString()}*\t${req.body.comment}`
-		fs.appendFile(path.join(source, 'CHANGELOG.md'), log, err => {
+		utils.writeLog(path.normalize(source), req.body.comment, err => {
 			if (!err) {
 				ncp(source, destination, err => {
 					if (!err) res.json({success: true})
 					else next(err)
 				})
-			}else next(err)
+			}else next(err)			
 		})
 	})
 

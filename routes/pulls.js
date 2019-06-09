@@ -17,7 +17,8 @@ router
 				return {
 					log: utils.getLastLog(path.join(paths.pull, pull)),
 					time: Number(pull.split('_')[1]),
-					pull: pull.split('_')[0]
+					pull: pull.split('_')[0],
+					path: path.join(paths.pull, pull)
 				}
 			})
 

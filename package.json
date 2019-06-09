@@ -1,6 +1,6 @@
 {
   "name": "softgestion",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",

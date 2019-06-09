@@ -33,7 +33,8 @@ function getHistorique(folder) {
 			var backup = {
 				log: utils.getLastLog(myPath),
 				time: Number(version),
-				path: myPath
+				path: myPath,
+				name: folder
 			}
 			return backup
 

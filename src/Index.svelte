@@ -1,8 +1,9 @@
 <script>
 	import Masters from './Masters.svelte'
 	import Copies from './Copies.svelte'
+  import Backups from './Backups.svelte'
 	import Section from './Sections.svelte'
-	import { masterSelected, copies, sections } from './stores.js'
+	import { copies, sections, view } from './stores.js'
 
 	let sectionChoiceOpen = false
 	let searchSection = ''
@@ -32,12 +33,15 @@
   				on:clickdownload="{sectionChoiceOpenForce}"
   			/>
   		</div>
-
-		<div class="w3-col w3-padding m4">
-			<Copies/>
-		</div>
-
-
+    {#if $view == 'copies'}
+  		<div class="w3-col w3-padding m4">
+  			<Copies/>
+  		</div>    
+    {:else if $view == 'backups'}
+      <div class="w3-col w3-padding m4">
+        <Backups/>
+      </div>
+    {/if}
   		<!--
   		<div class="w3-col w3-padding m4">
   	 		<span class="w3-xlarge">

@@ -1,6 +1,8 @@
 <script>
-	import Master from './Master.svelte'
-	import { masters, masterSelected } from './stores.js'
+	import { paths, masters, masterSelected, copies, backups, view } from './stores.js'
+	import { slide } from 'svelte/transition'
+	import { createEventDispatcher } from 'svelte'
+	const dispatch = createEventDispatcher()
 
 	function openSelectFolder() {
 		document.getElementById('selectfolder').click()
@@ -25,7 +27,8 @@
 				.then(res => res.json())
 				.then(data => {
 					if (data.success) {
-						masters.update(m => [folderName, ...m])
+						$masters = [folderName, ...$masters]
+						$backups = [data.backup, ...$backups]
 					}else{
 						alert(data.message)
 					}
@@ -35,11 +38,45 @@
 		}
 	}
 
+	function selectMaster(master) {
+		$masterSelected = master
+		if ($view == 'backups') showBackups(master)
+		else showCopies(master)
+	}
+
+	function showCopies(master) {
+		$view = 'copies'
+		$copies = $copies.map(copy => {
+			if (copy.name == master) copy.hide = false
+			else copy.hide = true
+			return copy
+		})
+	}
+
+	function showBackups(master) {
+		$view = 'backups'
+		$backups = $backups.map(backup => {
+			if (backup.name == master) backup.hide = false
+			else backup.hide = true
+			return backup
+		})
+	}
+
+
 </script>
 
 <style>
 	i {cursor: pointer;}
 	i:hover {transform: scale(1.1);}
+
+	li span { display: none;}
+	li:hover span {display: block;}
+	li {cursor: pointer;}
+	i:hover {transform: scale(1.2);}
+	.selected {
+		border-left: 5px solid grey;
+	}
+
 </style>
 
 <div>
@@ -50,12 +87,20 @@
 
 	<ul class="w3-ul">
 		{#each $masters as master}
-			<Master 
-				name="{master}"
-				on:click="{() => masterSelected.update(ms => ms = master)}"
-				selected="{$masterSelected == master}"
-				on:clickdownload
-			/>
+
+			<li on:click="{() => selectMaster(master)}" class:selected="{$masterSelected == master}" transition:slide>
+				<b>{master}</b>
+				<span class="w3-right">
+					<a href="{$paths.master}/{name}">
+						<i class="far fa-folder-open"></i>
+					</a>&nbsp;&nbsp;
+					<i class="far fa-copy"		on:click="{() => showCopies(master)}"	></i>&nbsp;&nbsp;
+					<i class="fas fa-history"	on:click="{() => showBackups(master)}"></i>&nbsp;&nbsp;
+					<i class="fas fa-download" 	on:click="{() => dispatch('clickdownload')}"></i>
+				</span>
+			</li>
+
+
 		{:else}
 			<div class="w3-center w3-xlarge w3-spin"><i class="fas fa-sync-alt"></i></div>
 		{/each}

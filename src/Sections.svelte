@@ -13,20 +13,24 @@
 	$: canCreateSection = $sections.filter(s => s.indexOf(search) != -1).length == 0
 
 	function createSection() {
-		fetch('copies/sections', {
-			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify({section: search})
-		})
-		.then(res => res.json())
-		.then(data => {
-			if (data.success) {
-				sections.update(s => [search, ...s])
-				search = ''
-			}else {
-				alert(data.message)
-			}
-		})
+		if (!search.length) {
+			alert('Il faut entrer un nom dans le champ de recherche !')
+		}else{
+			fetch('copies/sections', {
+				method: 'POST',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({section: search})
+			})
+			.then(res => res.json())
+			.then(data => {
+				if (data.success) {
+					sections.update(s => [search, ...s])
+					search = ''
+				}else {
+					alert(data.message)
+				}
+			})			
+		}
 	}
 
 	function createCopy(section) {
@@ -44,13 +48,11 @@
 				.then(data => {
 					if (data.success) {
 						copy.name = copy.master
+						copy.time = new Date().getTime()
 						if (index == -1 ){
-							copies.update(c => [copy, ...c])
+							$copies = [copy, ...$copies]
 						}else{
-							copies.update(c => {
-								c[index].log = log
-								return c
-							})
+							$copies[index].log = log
 						}
 					}else {
 						alert(data.message)
@@ -67,7 +69,6 @@
 
 <style>
 	.visible {display: block;}
-	.hidden {display: none;}
 	.clickable {cursor: pointer;}
 	i.clickable:hover {transform: scale(1.2);}
 	div.clickable:hover {transform: scale(1.1);}
@@ -85,7 +86,7 @@
 		<ul class="w3-ul">
 			{#each $sections as section}
 				<li 
-					class:hidden="{section.indexOf(search) == -1}" 
+					class:w3-hide="{section.indexOf(search) == -1}" 
 					class="clickable"
 					on:click="{() => createCopy(section)}"
 				>{section}</li>
@@ -93,7 +94,7 @@
 		</ul>
 
 		<div 
-			class:hidden="{!canCreateSection}"
+			class:w3-hide="{!canCreateSection}"
 			class="clickable w3-padding w3-center"
 			on:click={createSection}
 		>
