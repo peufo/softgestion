@@ -4,7 +4,7 @@ Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 ## Installation
 ### Environnements d’exécution
 **Serveur:**
-[NodeJS](https://nodejs.org/en/)  et  [PM2](https://pm2.io/runtime/) doivent être installés et disponibles depuis l'invite de commande (PATH).
+[NodeJS](https://nodejs.org/en/)  et  [PM2](https://pm2.io/runtime/) doivent être installés et disponibles depuis l'invite de commande.
 
 **Client:** 
 	L'application fonctionne sur n'importe quel navigateur moderne.
