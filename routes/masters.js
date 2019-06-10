@@ -16,7 +16,7 @@ router
 		form.parse(req, (err, fields) => {
 			if (!err) {
 
-				createMaster(fields.folderName, form.openedFiles, (err, backup) => {
+				createMaster(req, fields.folderName, form.openedFiles, (err, backup) => {
 					if (!err) {
 						res.json({success: true, message: 'New master created', backup})
 					}else next(err)
@@ -41,7 +41,7 @@ router
 	})
 
 
-var createMaster = (folderName, files, cb) => {
+var createMaster = (req, folderName, files, cb) => {
 	var test = files[0].name.split('/')
 	test.shift()
 	fs.mkdir(path.join(req.paths.master, folderName), err => {
