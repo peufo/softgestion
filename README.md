@@ -1,5 +1,6 @@
 # SoftGestion
 Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
+![Représentation du flux](public/images/Flux.GIF)
 
 ## Installation
 ### Environnements d’exécution
@@ -39,7 +40,7 @@ Tant que les chemins de vos répertoires ne seront pas configurés, vous serez a
 ![Capture d'écran Gestion des chemins
 ](public/images/Paths_Gestion.GIF)
 1. Cliquez sur l'onglet *Gestion des chemins*
-2. Renseignez les quatre champs (Attention, les chemins que vous indiquer doivent exister sur votre réseau et être accessible par le serveur)
+2. Renseignez les quatre champs (Attention, les chemins que vous indiquez doivent exister sur votre réseau et être accessible par le serveur)
 3. Cliquez sur *Sauvegarder*
 4. Vous pouvez désormais vous rendre sur la page d’accueil
 
@@ -53,4 +54,17 @@ Importez vos dossiers:
 ](public/images/Create_Master.GIF)
 1. Cliquez sur le clickboard
 
-TODO: Ecrire la suite du tuto...
+...
+
+La suite devrait être assez instinctif pour ce passer de tutoriel...
+
+TODO: Décrire les fonctionnalités
+
+## Notes
+
+Cette application n'est qu'un prototype (version 0.1.0) et de nombreuses corrections et améliorations devront encore être apporté...
+
+Le but principal du projet est l'apprentissage et l'expérimentation de technologies modernes du web.
+N’hésitez donc pas à être force de proposition concernant l'ergonomie de l'interface ou la qualité du code.
+
+Enjoy \\( ﾟ▽ﾟ)/
