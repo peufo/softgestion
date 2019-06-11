@@ -1,3 +1,4 @@
+
 # SoftGestion
 Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 ![Représentation du flux](public/images/Flux.GIF)
@@ -5,17 +6,21 @@ Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 ## Installation
 ### Environnements d’exécution
 **Serveur:**
-[NodeJS](https://nodejs.org/en/)  et  [PM2](https://pm2.io/runtime/) doivent être installés et disponibles depuis l'invite de commande.
+[NodeJS](https://nodejs.org/en/)  et  NPM doit être disponibles depuis l'invite de commande.
+[PM2](https://pm2.io/runtime/) sera utilisé pour gérer l’exécution.
 
 **Client:** 
-	L'application fonctionne sur n'importe quel navigateur moderne.
-	Cependant, l'interface propose des liens permettent d'accéder directement aux répertoires Windows. Ce qui n'est nativement pas possible pour le navigateur. Pour résoudre le problème, il faut installer l'extension  [Local Explorer](https://chrome.google.com/webstore/detail/local-explorer-file-manag/eokekhgpaakbkfkmjjcbffibkencdfkl) pour Google Chrome. Une autre solution, si vous souhaitez utiliser un autre navigateur, est de changer les paramètres de sécurité pour l'adresse en question.
+    L'application fonctionne sur n'importe quel navigateur moderne.
+    Cependant, l'interface propose des liens permettent d'accéder directement aux répertoires Windows. Ce qui n'est nativement pas possible pour le navigateur. Pour résoudre le problème, il faut installer l'extension  [Local Explorer](https://chrome.google.com/webstore/detail/local-explorer-file-manag/eokekhgpaakbkfkmjjcbffibkencdfkl) pour Google Chrome. Une autre solution, si vous souhaitez utiliser un autre navigateur, est de changer les paramètres de sécurité pour l'adresse en question.
 
 ### Installation et démarrage
 
     # Téléchargement
     $ npx degit PeufOne/softgestion softgestion
     
+    # Se rendre dans le sous-répertoire
+    $ cd softgestion
+
     # Installation des modules
     $ npm i
     
@@ -32,8 +37,8 @@ Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 Le port  de production configuré par défaut est le  ***3000*** mais il peut être changé dans le fichier ***config.js***.
 
     module.exports = {
-		PORT: dev ? 3001 : 3000
-	}
+        PORT: dev ? 3001 : 3000
+    }
 
 ### Configuration du client
 Tant que les chemins de vos répertoires ne seront pas configurés, vous serez automatiquement redirigé sur la page d’administration...
