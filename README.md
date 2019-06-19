@@ -3,13 +3,20 @@
 Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 ![Représentation du flux](public/images/Flux.GIF)
 
+### Table des matières
+* [Installation](#installation)
+    * [Environnements d’exécution](#environnements-dexécution)
+        * [Serveur](#serveur)
+        * [Client](#client)
+
+
 ## Installation
 ### Environnements d’exécution
-**Serveur:**
+#### Serveur
 [NodeJS](https://nodejs.org/en/)  et  NPM doit être disponibles depuis l'invite de commande.
 [PM2](https://pm2.io/runtime/) sera utilisé pour gérer l’exécution.
 
-**Client:** 
+#### Client 
     L'application fonctionne sur n'importe quel navigateur moderne.
     Cependant, l'interface propose des liens permettent d'accéder directement aux répertoires Windows. Ce qui n'est nativement pas possible pour le navigateur. Pour résoudre le problème, il faut installer l'extension  [Local Explorer](https://chrome.google.com/webstore/detail/local-explorer-file-manag/eokekhgpaakbkfkmjjcbffibkencdfkl) pour Google Chrome. Une autre solution, si vous souhaitez utiliser un autre navigateur, est de changer les paramètres de sécurité pour l'adresse en question.
 
@@ -103,7 +110,7 @@ Une fois le proposition confirmé, il est recommandé de supprimer la copie.
 ![Capture d'écran](public/images/Get_Admin.GIF)
 1. Accédez à la vue administrateur en cliquant sur la roue
 2. Cliquez sur une section pour y accéder
-3. Clicker sur la maison pour revenire à la vue principal
+3. Cliquez sur la maison pour revenir à la vue principal
 
 ### Gestion des modifications
 ![Capture d'écran](public/images/Gestion_Modif.GIF)
@@ -130,6 +137,6 @@ Attention cependant, celui-ci est stocker en clair dans le fichier */data/passwo
 Cette application n'est qu'un prototype en version alpha et de nombreuses corrections et améliorations devront encore être apporté...
 
 Le but principal du projet est l'apprentissage et l'expérimentation de technologies modernes du web.
-N’hésitez donc pas à être force de proposition concernant l'ergonomie de l'interface ou la qualité du code.
+N’hésitez donc pas à être force de proposition concernant les fonctionnalités, l'ergonomie de l'interface ou la qualité du code.
 
 Enjoy \\( ﾟ▽ﾟ)/
