@@ -5,3 +5,4 @@ data/*
 public/*
 !public/views
 !public/images
+!public/stylesheets

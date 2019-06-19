@@ -1,0 +1,52 @@
+html {
+	font-family: Verdana,sans-serif;
+	background: #dddddd;
+}
+
+body {
+	width: 1000px;
+	margin: auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	background: white;
+	padding: 50px;
+	border-radius: 10px;
+	border: solid 1px grey;
+}
+
+img {
+	width: 800px;
+	margin: 50px;
+	margin-left: 100px;
+}
+
+ul a {
+	text-decoration: none;
+	color: black;
+}
+
+pre {
+	padding: 10px;
+	border: 1px solid grey;
+	border-radius: 5px;
+}
+
+h2 {
+	margin-top: 100px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e5e5e5; 
+}
+
+h3 {
+	margin-top: 100px;
+}
+
+@media print {
+	body {
+		width: 90%;
+		border: none;
+	}
+	img {
+		margin-left: 50px;
+	}
+}

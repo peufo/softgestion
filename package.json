@@ -9,7 +9,7 @@
     "pm2": "^3.5.1",
     "rollup": "^1.10.1",
     "rollup-plugin-commonjs": "^9.3.4",
-    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-livereload": "^1.0.1",
     "rollup-plugin-multi-entry": "^2.1.0",
     "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-scss": "^1.0.1",
@@ -38,6 +38,9 @@
     "morgan": "~1.9.0",
     "ncp": "^2.0.0",
     "path": "^0.12.7",
-    "rimraf": "^2.6.3"
+    "remark-html": "^9.0.1",
+    "remark-parse": "^6.0.3",
+    "rimraf": "^2.6.3",
+    "unified": "^7.1.0"
   }
 }

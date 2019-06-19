@@ -1,6 +1,7 @@
 
 # SoftGestion
 Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
+
 ![Représentation du flux](public/images/Flux.GIF)
 
 ## Table des matières
@@ -95,7 +96,7 @@ L'application est maintenant entièrement disponible.
 1. La bar de recherche permet de filtrer les masters
 2. Ouvrir le dossier
 3. Afficher les copies du master
-4. Afficher les l'hitoriques du master
+4. Afficher les l'historiques du master
 5. Créer une copie
 
 ### Création d'une copie
@@ -153,5 +154,7 @@ Cette application n'est qu'un prototype en version alpha et de nombreuses correc
 
 Le but principal du projet est l'apprentissage et l'expérimentation de technologies modernes du web.
 N’hésitez donc pas à être force de proposition concernant les fonctionnalités, l'ergonomie de l'interface ou la qualité du code.
+
+Si vous êtes un utilisateur, surveillez les mise à jour sur [Github](https://github.com/PeufOne/softgestion)
 
 Enjoy \\( ﾟ▽ﾟ)/
