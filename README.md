@@ -61,7 +61,7 @@ L'application est maintenant entièrement disponible.
 ## Utilisation vue principal
 
 ### Importez un dossier
-![Capture d'écran Gestion des chemins](public/images/Create_Master.GIF)
+![Capture d'écran](public/images/Create_Master.GIF)
 1. Cliquez sur le clickboard.
 2. Sélectionner le dossier que vous souhaitez importer.
 3. Clickez sur *importer*.
@@ -69,7 +69,7 @@ L'application est maintenant entièrement disponible.
 5. Valider en cliquant sur *OK*.
 
 ### Fonctionnalitées des masters
-![Capture d'écran Masters](public/images/Functions_Master.GIF)
+![Capture d'écran](public/images/Functions_Master.GIF)
 1. La bar de recherche permet de filtrer les masters
 2. Ouvrir le dossier
 3. Afficher les copies du master
@@ -77,7 +77,7 @@ L'application est maintenant entièrement disponible.
 5. Créer une copie
 
 ### Création d'une copie
-![Capture d'écran Masters](public/images/Create_Copy.GIF)
+![Capture d'écran](public/images/Create_Copy.GIF)
 1. Cliquez pour ouvrir le choix des sections.
 2. La bar de recherche permet de filtrer les sections.
 3. Si votre recherche ne correspond à aucune sections, vous pouvez en créez une nouvelle en cliquant sur *nouvelle section*.
@@ -86,33 +86,48 @@ L'application est maintenant entièrement disponible.
 6. Validez en cliquant sur *OK*
 
 ### Fonctionnalitées des copies
-![Capture d'écran Masters](public/images/Functions_Copy.GIF)
+![Capture d'écran](public/images/Functions_Copy.GIF)
 1. Ouvrir le dossier
 2. Supprimer la copie
 3. Proposer une nouvelle version du dossier
 
 ### Proposition d'une nouvelle version
-![Capture d'écran Masters](public/images/Pull_Copy.GIF)
+![Capture d'écran](public/images/Pull_Copy.GIF)
 1. Cliquer pour proposer un nouvelle version du dossier
 2. Renseignez les changements qui ont été effectué
 3. Validez en cliquant sur *OK*
 
-### Proposition d'une nouvelle version
-![Capture d'écran Masters](public/images/Pull_Copy.GIF)
-1. Cliquer pour proposer un nouvelle version du dossier
-2. Renseignez les changements qui ont été effectué
-3. Validez en cliquant sur *OK*
-
-Une fois le proposition confirmé, il est recommander de supprimer la copie.
+Une fois le proposition confirmé, il est recommandé de supprimer la copie.
 
 ## Utilisation de la vue administrateur
+![Capture d'écran](public/images/Get_Admin.GIF)
+1. Accédez à la vue administrateur en cliquant sur la roue
+2. Cliquez sur une section pour y accéder
+3. Clicker sur la maison pour revenire à la vue principal
 
-TODO: faire les instructions
+### Gestion des modifications
+![Capture d'écran](public/images/Gestion_Modif.GIF)
+1. Refuser et supprimer la modification
+2. Accepter la modification (le master actuel sera archivé et remplacé)
 
+Ces actions n'ont pas d'influence sur les copies
+
+### Gestion des copies
+![Capture d'écran](public/images/Gestion_Copy.GIF)
+1. Utilisez le curseur pour choisir l'encienneté des copies sélectionées
+2. Déselectionez ou séléctionez des copies une par une en cliquant sur la poubelle
+3. Cliquer sur *Supprimer la sélection*
+
+### Gestion des chemins
+Voir le chapitre *Configuration du client*
+
+### Mot de passe
+Vous avez la possibilitez de protéger l'accées à la vue admin avec un mot de passe.
+Attention cependant, celui-ci est stocker en clair dans le fichier */data/password* du programme. Pour une réelle protection, le client ne doit donc pas avoir accées à ce dossier.
 
 ## Notes
 
-Cette application n'est qu'un prototype (version 0.1.0) et de nombreuses corrections et améliorations devront encore être apporté...
+Cette application n'est qu'un prototype en version alpha et de nombreuses corrections et améliorations devront encore être apporté...
 
 Le but principal du projet est l'apprentissage et l'expérimentation de technologies modernes du web.
 N’hésitez donc pas à être force de proposition concernant l'ergonomie de l'interface ou la qualité du code.
