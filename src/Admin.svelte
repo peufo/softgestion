@@ -77,7 +77,6 @@
 	let newpwd = ''
 	let newpwdConfirm = ''
 	let unlock = false
-	unlockAdmin()
 
 	function changePwd() {
 		fetch('pwd', {
