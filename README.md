@@ -15,55 +15,100 @@ Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 
 ### Installation et démarrage
 
-    # Téléchargement
-    $ npx degit PeufOne/softgestion softgestion
-    
-    # Se rendre dans le sous-répertoire
-    $ cd softgestion
 
-    # Installation des modules
-    $ npm i
+
+```bash
+# Téléchargement
+$ npx degit PeufOne/softgestion softgestion
     
-    # Démarrage du serveur de production
-    $ npm run prod
+# Se rendre dans le sous-répertoire
+$ cd softgestion
+
+# Installation des modules
+$ npm i
     
-    # Monitoring
-    $ pm2 monit
+# Démarrage du serveur de production
+$ npm run prod
     
-    # Plus de manipulation disponible dans la doc de pm2...
+# Monitoring
+$ pm2 monit
+
+# Plus de manipulation disponible dans la doc de pm2...
+```
+
     
    
 ### Configuration du serveur
 Le port  de production configuré par défaut est le  ***3000*** mais il peut être changé dans le fichier ***config.js***.
-
+```js
     module.exports = {
         PORT: dev ? 3001 : 3000
     }
+```
 
 ### Configuration du client
 Tant que les chemins de vos répertoires ne seront pas configurés, vous serez automatiquement redirigé sur la page d’administration...
-![Capture d'écran Gestion des chemins
-](public/images/Paths_Gestion.GIF)
-1. Cliquez sur l'onglet *Gestion des chemins*
-2. Renseignez les quatre champs (Attention, les chemins que vous indiquez doivent exister sur votre réseau et être accessible par le serveur)
-3. Cliquez sur *Sauvegarder*
-4. Vous pouvez désormais vous rendre sur la page d’accueil
+![Capture d'écran Gestion des chemins](public/images/Paths_Gestion.GIF)
+1. Cliquez sur l'onglet *Gestion des chemins*.
+2. Renseignez les quatre champs (Attention, les chemins que vous indiquez doivent exister sur votre réseau et être accessible par le serveur).
+3. Cliquez sur *Sauvegarder*.
+4. Vous pouvez désormais vous rendre sur la page d’accueil.
 
 NOTE: Pour que le serveur puisse envoyer un visuel des PDF contenu dans vos dossiers, il est nécessaire de redémarrer le serveur après avoir défini vos chemins.
 
 L'application est maintenant entièrement disponible.
 
-## Utilisation
-Importez vos dossiers:
-![Capture d'écran Gestion des chemins
-](public/images/Create_Master.GIF)
-1. Cliquez sur le clickboard
+## Utilisation vue principal
 
-...
+### Importez un dossier
+![Capture d'écran Gestion des chemins](public/images/Create_Master.GIF)
+1. Cliquez sur le clickboard.
+2. Sélectionner le dossier que vous souhaitez importer.
+3. Clickez sur *importer*.
+4. Choisisez le nom de votre nouveau dossier (il ne doit pas encore éxisté).
+5. Valider en cliquant sur *OK*.
 
-La suite devrait être assez instinctif pour ce passer de tutoriel...
+### Fonctionnalitées des masters
+![Capture d'écran Masters](public/images/Functions_Master.GIF)
+1. La bar de recherche permet de filtrer les masters
+2. Ouvrir le dossier
+3. Afficher les copies du master
+4. Afficher les l'hitoriques du master
+5. Créer une copie
 
-TODO: Décrire les fonctionnalités
+### Création d'une copie
+![Capture d'écran Masters](public/images/Create_Copy.GIF)
+1. Cliquez pour ouvrir le choix des sections.
+2. La bar de recherche permet de filtrer les sections.
+3. Si votre recherche ne correspond à aucune sections, vous pouvez en créez une nouvelle en cliquant sur *nouvelle section*.
+4. Cliquez sur la section désiré.
+5. Renseignez la raison d'être de votre copy.
+6. Validez en cliquant sur *OK*
+
+### Fonctionnalitées des copies
+![Capture d'écran Masters](public/images/Functions_Copy.GIF)
+1. Ouvrir le dossier
+2. Supprimer la copie
+3. Proposer une nouvelle version du dossier
+
+### Proposition d'une nouvelle version
+![Capture d'écran Masters](public/images/Pull_Copy.GIF)
+1. Cliquer pour proposer un nouvelle version du dossier
+2. Renseignez les changements qui ont été effectué
+3. Validez en cliquant sur *OK*
+
+### Proposition d'une nouvelle version
+![Capture d'écran Masters](public/images/Pull_Copy.GIF)
+1. Cliquer pour proposer un nouvelle version du dossier
+2. Renseignez les changements qui ont été effectué
+3. Validez en cliquant sur *OK*
+
+Une fois le proposition confirmé, il est recommander de supprimer la copie.
+
+## Utilisation de la vue administrateur
+
+TODO: faire les instructions
+
 
 ## Notes
 
