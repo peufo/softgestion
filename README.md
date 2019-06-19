@@ -3,11 +3,26 @@
 Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 ![Représentation du flux](public/images/Flux.GIF)
 
-### Table des matières
+## Table des matières
 * [Installation](#installation)
     * [Environnements d’exécution](#environnements-dexécution)
         * [Serveur](#serveur)
         * [Client](#client)
+    * [Installation et démarrage](#installation-et-démarrage)
+    * [Configuration du serveur](#configuration-du-serveur)
+    * [Configuration du client](#configuration-du-client)
+* [Utilisation vue principal](#configuration-du-serveur)
+    * [Importez un dossier](#importez-un-dossier)
+    * [Fonctionnalitées des masters](#fonctionnalitées-des-masters)
+    * [Création d'une copie](#création-dune-copie)
+    * [Fonctionnalitées des copies](#fonctionnalitées-des-copies)
+    * [Proposition d'une nouvelle version](#proposition-dune-nouvelle-version)
+* [Utilisation de la vue administrateur](#utilisation-de-la-vue-administrateur)
+    * [Gestion des modifications](#gestion-des-modifications)
+    * [Gestion des copies](#gestion-des-copies)
+    * [Gestion des chemins](#gestion-des-chemins)
+    * [Mot de passe](#mot-de-passe)
+ * [Notes](#notes)
 
 
 ## Installation
@@ -17,8 +32,8 @@ Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 [PM2](https://pm2.io/runtime/) sera utilisé pour gérer l’exécution.
 
 #### Client 
-    L'application fonctionne sur n'importe quel navigateur moderne.
-    Cependant, l'interface propose des liens permettent d'accéder directement aux répertoires Windows. Ce qui n'est nativement pas possible pour le navigateur. Pour résoudre le problème, il faut installer l'extension  [Local Explorer](https://chrome.google.com/webstore/detail/local-explorer-file-manag/eokekhgpaakbkfkmjjcbffibkencdfkl) pour Google Chrome. Une autre solution, si vous souhaitez utiliser un autre navigateur, est de changer les paramètres de sécurité pour l'adresse en question.
+L'application fonctionne sur n'importe quel navigateur moderne.
+Cependant, l'interface propose des liens permettent d'accéder directement aux répertoires Windows. Ce qui n'est nativement pas possible pour le navigateur. Pour résoudre le problème, il faut installer l'extension  [Local Explorer](https://chrome.google.com/webstore/detail/local-explorer-file-manag/eokekhgpaakbkfkmjjcbffibkencdfkl) pour Google Chrome. Une autre solution, si vous souhaitez utiliser un autre navigateur, est de changer les paramètres de sécurité pour l'adresse en question.
 
 ### Installation et démarrage
 
@@ -48,9 +63,9 @@ $ pm2 monit
 ### Configuration du serveur
 Le port  de production configuré par défaut est le  ***3000*** mais il peut être changé dans le fichier ***config.js***.
 ```js
-    module.exports = {
-        PORT: dev ? 3001 : 3000
-    }
+module.exports = {
+    PORT: dev ? 3001 : 3000
+}
 ```
 
 ### Configuration du client
