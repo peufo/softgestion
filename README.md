@@ -4,6 +4,10 @@ Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 
 ![Représentation du flux](public/images/Flux.GIF)
 
+Elle permet de supprimer les fastidieux et dangereux copié collé manuel habituellement utilisé pour adapter des programme à ses besoins sans altérer celui d’origine. L’interface propose également une forme très primaire de gestion des versions en gérant automatiquement un fichier  de suivi et en sauvegardant le tout dans un backup.
+L’application n’utilise aucune base de données. Elle reflète et manipule simplement le système de fichiers.
+
+
 ## Table des matières
 * [Installation](#installation)
     * [Environnements d’exécution](#environnements-dexécution)
@@ -87,8 +91,8 @@ L'application est maintenant entièrement disponible.
 ![Capture d'écran](public/images/Create_Master.GIF)
 1. Cliquez sur le clickboard.
 2. Sélectionner le dossier que vous souhaitez importer.
-3. Clickez sur *importer*.
-4. Choisisez le nom de votre nouveau dossier (il ne doit pas encore éxisté).
+3. Cliquez sur *importer*.
+4. Choisisez le nom de votre nouveau dossier (il ne doit pas encore exister).
 5. Valider en cliquant sur *OK*.
 
 ### Fonctionnalitées des masters
