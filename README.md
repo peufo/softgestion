@@ -90,10 +90,10 @@ L'application est maintenant entièrement disponible.
 ### Importez un dossier
 ![Capture d'écran](public/images/Create_Master.GIF)
 1. Cliquez sur le clickboard.
-2. Sélectionner le dossier que vous souhaitez importer.
+2. Sélectionnez le dossier que vous souhaitez importer.
 3. Cliquez sur *importer*.
 4. Choisisez le nom de votre nouveau dossier (il ne doit pas encore exister).
-5. Valider en cliquant sur *OK*.
+5. Validez en cliquant sur *OK*.
 
 ### Fonctionnalitées des masters
 ![Capture d'écran](public/images/Functions_Master.GIF)
@@ -109,7 +109,7 @@ L'application est maintenant entièrement disponible.
 2. La bar de recherche permet de filtrer les sections.
 3. Si votre recherche ne correspond à aucune sections, vous pouvez en créez une nouvelle en cliquant sur *nouvelle section*.
 4. Cliquez sur la section désiré.
-5. Renseignez la raison d'être de votre copy.
+5. Renseignez la raison d'être de votre copie.
 6. Validez en cliquant sur *OK*
 
 ### Fonctionnalitées des copies
@@ -120,7 +120,7 @@ L'application est maintenant entièrement disponible.
 
 ### Proposition d'une nouvelle version
 ![Capture d'écran](public/images/Pull_Copy.GIF)
-1. Cliquer pour proposer un nouvelle version du dossier
+1. Cliquez pour proposer un nouvelle version du dossier
 2. Renseignez les changements qui ont été effectué
 3. Validez en cliquant sur *OK*
 
