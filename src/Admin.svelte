@@ -93,6 +93,7 @@
 		})
 	}
 
+	unlockAdmin()
 	function unlockAdmin() {
 		fetch(`checkpwd`, {
 			method: 'POST',
@@ -101,12 +102,12 @@
 		})
 		.then(res => res.json())
 		.then(data => {
-			pwd = ''
 			if (data.success) {
 				unlock = true
 			}else{
-				alert('Mot de passe invalide !')
+				if (pwd != '') alert('Mot de passe invalide !')
 			}
+			pwd = ''
 		})
 	}
 

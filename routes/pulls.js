@@ -29,28 +29,20 @@ router
 	.post('/accept/:folder', (req, res, next) => {
 		var name = req.params.folder.split('_')[0]
 		var time = req.params.folder.split('_')[1]
-		var source = path.join(req.paths.master, name)
+		var source = path.join(req.paths.pull, req.params.folder)
 		var destination = path.join(req.paths.backup, name, String(new Date().getTime()))
 		ncp(source, destination, err => {
 			if (!err) {
-				//var log = `\n*${new Date().toLocaleString()}*\t#Remplacé par une nouvelle version`
-				//fs.appendFile(path.join(destination, 'CHANGELOG.md'), log, err => {
-				//	if (!err) {
-						source = path.join(req.paths.pull, req.params.folder)
-						destination = path.join(req.paths.master, name)
-						ncp(source, destination, err => {
+				destination = path.join(req.paths.master, name)
+				ncp(source, destination, err => {
+					if (!err) {
+						rimraf(source, err => {
 							if (!err) {
-								rimraf(path.join(req.paths.pull, req.params.folder), err => {
-									if (!err) {
-										res.json({success: true, message: 'Modification accepté'})
-									}else next(err)
-								})
+								res.json({success: true, message: 'Modification accepté'})
 							}else next(err)
 						})
-
-
-				//	}else next(err)
-				//})
+					}else next(err)
+				})
 			}else next(err)
 		})
 	})
