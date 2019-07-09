@@ -5,6 +5,7 @@ module.exports = {
   apps : [{
     name   : !dev ? pkg.name : `${pkg.name}-dev`,
     script : "./app.js",
+    max_restarts: 5,
     watch: !dev ? false : ['app.js', 'config.js', 'utils.js', 'routes', 'models']
   }]
 }

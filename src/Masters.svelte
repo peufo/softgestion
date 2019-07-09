@@ -9,6 +9,7 @@
 	$: console.log(search)
 
 	function openSelectFolder() {
+		document.getElementById('selectfolder').value = null
 		document.getElementById('selectfolder').click()
 	}
 
@@ -117,7 +118,7 @@
 
 	<!--  Sélection du dossier à importer  -->
 	<form enctype="multipart/form-data">
-    	<input on:change="{newMaster}" id="selectfolder" name="selectfolder" type="file" webkitdirectory directory multiple class="w3-hide"/>
+    	<input on:input="{newMaster}" id="selectfolder" name="selectfolder" type="file" webkitdirectory directory multiple class="w3-hide"/>
 	</form>
 
 </div>

@@ -5,7 +5,8 @@ var path = require('path')
 var utils = require('../utils')
 var formidable = require('formidable') //Upload files
 var ncp = require('ncp').ncp	//Copy Recursif
-ncp.limit = 3
+ncp.limit = 10
+var mkdirp = require('mkdirp')
 
 
 router
@@ -42,56 +43,64 @@ router
 
 
 var createMaster = (req, folderName, files, cb) => {
-	var test = files[0].name.split('/')
-	test.shift()
-	fs.mkdir(path.join(req.paths.master, folderName), err => {
-		if (!err) {
-			utils.writeLog(path.join(req.paths.master, folderName), `Création du répertoire`, err => {
-				if (!err) {
-					Promise.all(files.map(f => createFilePromise(req, folderName, f)))
-					.then(() => {
-						//Création de son répertoire dans le backup
-						fs.mkdir(path.join(req.paths.backup, folderName), err => {
-							if (!err) {
-								//Création du premier backup
-								var source = path.join(req.paths.master, folderName)
-								var cible = path.join(req.paths.backup, folderName, String(new Date().getTime()))
-								ncp(source, cible, err => {
-									if (!err) {
-										cb(null, {
-											log: `Création du répertoire`,
-											time: new Date().getTime(),
-											path: cible,
-											name: folderName
-										})
-									}else cb(err)
-								})
-							}else cb(err)
+
+	var folders = [path.join(req.paths.master, folderName)]
+
+	files.forEach(f => {
+		var name = f.name.split('/')
+		name[0] = folderName
+		f.name = path.join(req.paths.master, name.join('/'))
+		if (name.length > 2) {
+			name.pop()
+			folders.push(path.join(req.paths.master, name.join('/')))
+		}
+	})
+
+	Promise.all(folders.map(createFolderPromise))
+	.then(() => {
+		utils.writeLog(path.join(req.paths.master, folderName), `Création du répertoire`, err => {
+			if (err) return cb(err)
+			Promise.all(files.map(createFilePromise))
+			.then(() => {
+				//Création de son répertoire dans le backup
+				fs.mkdir(path.join(req.paths.backup, folderName), err => {
+					if (err) return cb(err)
+					//Création du premier backup
+					var source = path.join(req.paths.master, folderName)
+					var cible = path.join(req.paths.backup, folderName, String(new Date().getTime()))
+					ncp(source, cible, err => {
+						if (err) return cb(err)
+						cb(null, {
+							log: `Création du répertoire`,
+							time: new Date().getTime(),
+							path: cible,
+							name: folderName
 						})
 					})
-					.catch(cb)
-				}else cb(err)
+				})
 			})
-		}else cb(err)
-	})	
+			.catch(cb)
+		})
+	})
+	.catch(cb)
 }
 
-
-var createFilePromise = (req, folderName, file) => {
-	var names = file.name.split('/')
-	if (names.length == 2) {
-		var name = names[1]
-		return new Promise((resolve, reject) => {
-			var newPath = path.join(req.paths.master, folderName, name)
-			fs.rename(file.path, newPath, err => {
-				if (!err) resolve()
-				else reject(err)
-			})
+function createFolderPromise(folder) {
+	return new Promise((resolve, reject) => {
+		mkdirp(folder, err => {
+			if (!err) resolve()
+			else reject(err)
 		})
-	}else{
-		//TODO: Faire fonctionner de manière récursive
-		return new Promise(resolve => resolve())
-	}
+	})
+}
+
+function createFilePromise(file) {
+	return new Promise((resolve, reject) => {
+		fs.rename(file.path, file.name, err => {
+			if (!err) resolve()
+			else reject(err)
+		})
+	})
 
 }
 
