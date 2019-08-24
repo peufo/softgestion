@@ -81,8 +81,6 @@ Tant que les chemins de vos répertoires ne seront pas configurés, vous serez a
 3. Cliquez sur *Sauvegarder*.
 4. Vous pouvez désormais vous rendre sur la page d’accueil.
 
-NOTE: Pour que le serveur puisse envoyer un visuel des PDF contenu dans vos dossiers, il est nécessaire de redémarrer le serveur après avoir défini vos chemins.
-
 L'application est maintenant entièrement disponible.
 
 ## Utilisation vue principal
