@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var fs = require('fs')
+var fse = require('fs-extra')
 var path = require('path')
 var utils = require('../utils')
 var formidable = require('formidable') //Upload files
@@ -96,12 +97,11 @@ function createFolderPromise(folder) {
 
 function createFilePromise(file) {
 	return new Promise((resolve, reject) => {
-		fs.rename(file.path, file.name, err => {
+		fse.copy(file.path, file.name, err => {
 			if (!err) resolve()
 			else reject(err)
 		})
 	})
-
 }
 
 
