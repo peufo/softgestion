@@ -7,6 +7,11 @@ Interface facilitant la manipulation de répertoires ayant du contenu évolutif.
 Elle permet de supprimer les fastidieux et dangereux copié collé manuel habituellement utilisé pour adapter des programme à ses besoins sans altérer celui d’origine. L’interface propose également une forme très primaire de gestion des versions en gérant automatiquement un fichier  de suivi et en sauvegardant le tout dans un backup.
 L’application n’utilise aucune base de données. Elle reflète et manipule simplement le système de fichiers.
 
+> ## Experimental
+>
+> Cette application n'est qu'un prototype et de nombreuses corrections et améliorations devrait y être apporté pour utilisation en cas réel.
+> Le but principal du projet est l'apprentissage et l'expérimentation de technologies modernes du web.
+
 
 ## Table des matières
 * [Installation](#installation)
@@ -148,15 +153,7 @@ Voir le chapitre *Configuration du client*
 
 ### Mot de passe
 Vous avez la possibilitez de protéger l'accées à la vue admin avec un mot de passe.
-Attention cependant, celui-ci est stocker en clair dans le fichier */data/password* du programme. Pour une réelle protection, le client ne doit donc pas avoir accées à ce dossier.
+Attention cependant, celui-ci est stocker en clair dans le fichier */data/password* du programme ce qui n'offre pas un réel protection.
 
-## Notes
-
-Cette application n'est qu'un prototype en version alpha et de nombreuses corrections et améliorations devront encore être apporté...
-
-Le but principal du projet est l'apprentissage et l'expérimentation de technologies modernes du web.
-N’hésitez donc pas à être force de proposition concernant les fonctionnalités, l'ergonomie de l'interface ou la qualité du code.
-
-Si vous êtes un utilisateur, surveillez les mise à jour sur [Github](https://github.com/PeufOne/softgestion)
 
 Enjoy \\( ﾟ▽ﾟ)/
